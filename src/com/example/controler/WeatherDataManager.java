@@ -30,45 +30,45 @@ public class WeatherDataManager {
 	//天气类相关常量
 	
 	//获取数据方法集//
-	public String getCity(){
+	public String getCity(){								//获取城市名字
 		return weatherInfo.get("city");
 	}
 	
-	public String getDegreeString(int day){
+	public String getDegreeString(int day){					//获取完整最高温、最低温字符串
 		return weatherInfo.get("temp"+day);
 	}
 	
-	public String getMaxDegreeInDay(int day){
+	public String getMaxDegreeInDay(int day){				//获取最高温字符串
 		String []tmp=weatherInfo.get("temp"+day).split("~");
 		return tmp[0];
 	}
-	public String getMinDegreeInDay(int day){
+	public String getMinDegreeInDay(int day){				//获取最低温字符串
 		String []tmp=weatherInfo.get("temp"+day).split("~");
 		return tmp[1];
 	}
-	public String GetWeatherString(int day){
+	public String GetWeatherString(int day){				//天气汉字描述
 		return weatherInfo.get("weather"+day);
 	}
-	public String getImageId(int day,int dayOrNight){
+	public String getImageId(int day,int dayOrNight){	   //获取图片的名字
 		if(dayOrNight==DAY){
 			return weatherInfo.get("img"+day);
 		}
 		return weatherInfo.get("img"+(day+6));
 	}
-	public String getImageTitle(int day,int dayOrNight){
+	public String getImageTitle(int day,int dayOrNight){	//获取每个图片对应的解释信息
 		if(dayOrNight==DAY){
 			return weatherInfo.get("img_title"+day);
 		}
 		return weatherInfo.get("img_title"+(day+6));
 	}
-	public String getWindDescription(int day){
+	public String getWindDescription(int day){				//获取风的描述
 		return weatherInfo.get("wind"+day);
 	}
-	public String getWindLevelDescription(int day){
+	public String getWindLevelDescription(int day){			//获取风速等级
 		return weatherInfo.get("fl"+day);
 	}
 	
-	public String getExponent(int exponentId){
+	public String getExponent(int exponentId){				//得到各种指数
 		switch(exponentId){
 		case CLOTH_EXPONENT:
 			return weatherInfo.get("index");
@@ -95,31 +95,35 @@ public class WeatherDataManager {
 		weatherInfo=new HashMap<String,String>();
 	}
 	
-	public void HttpGetData() {  
-	    try {  
-	    	System.out.println("in");
-	        HttpClient httpclient = new DefaultHttpClient();  
-	        System.out.println("in");
-	        String uri = "http://m.weather.com.cn/atad/101190101.html";   
-	        HttpGet get = new HttpGet(uri);  
-	        System.out.println("in");
-	        //添加http头信息    
-	        get.addHeader("Authorization", "hxt ");  
-	        get.addHeader("Content-Type", "application/json");  
-	        get.addHeader("User-Agent","student");  
-	        HttpResponse response;  
-	        response = httpclient.execute(get);
-	        int code = response.getStatusLine().getStatusCode();  
-	        //检验状态码，如果成功接收数据   
-	        if (code == 200) { 
-	            String rev = EntityUtils.toString(response.getEntity());    
-	            parseJSON(rev);
-	      
-	        }  
-	    } catch (Exception e) {    
-	    	e.printStackTrace();
-	    }  
+	public void HttpGetData(){
+		new Thread(getRunnable).start();
 	}
+	
+	private Runnable getRunnable = new Runnable(){
+	    @Override
+	    public void run() {
+	    	try {  
+		        HttpClient httpclient = new DefaultHttpClient();  
+		        String uri = "http://m.weather.com.cn/atad/101190101.html";   
+		        HttpGet get = new HttpGet(uri);  
+
+		        //添加http头信息    
+		        get.addHeader("Authorization", "hxt ");  
+		        get.addHeader("Content-Type", "application/json");  
+		        get.addHeader("User-Agent","student");  
+		        HttpResponse response;  
+		        response = httpclient.execute(get);
+		        int code = response.getStatusLine().getStatusCode(); 
+		        //检验状态码，如果成功接收数据   
+		        if (code == 200) { 
+		            String rev = EntityUtils.toString(response.getEntity());    
+		            parseJSON(rev);
+		        }  
+		    } catch (Exception e) {    
+		    	e.printStackTrace();
+		    }  
+	    }
+	};
 	
 	public void parseJSON(String rev)
     {

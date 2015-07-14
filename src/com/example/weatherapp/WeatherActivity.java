@@ -2,6 +2,7 @@ package com.example.weatherapp;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.view.Menu;
 
 
@@ -17,9 +18,6 @@ public class WeatherActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
         
-        WeatherDataManager weatherManage=new WeatherDataManager();
-        weatherManage.HttpGetData();
-        System.out.println(weatherManage.getExponent(WeatherDataManager.TRAVEL_EXPONENT));
     }
 
     @Override
