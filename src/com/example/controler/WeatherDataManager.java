@@ -14,7 +14,83 @@ import org.json.JSONObject;
 
 public class WeatherDataManager {
 	private Map<String,String> weatherInfo;
+	//天气类相关常量
+	public static final int DAY=0;
+	public static final int NIGHT=1;
 	
+	
+	public static final int CLOTH_EXPONENT=0;
+	public static final int ULTRAVIOLET_EXPONENT=1;
+	public static final int WASH_CAR_EXPONENT=2;
+	public static final int TRAVEL_EXPONENT=3;
+	public static final int COMFORTABLE_EXPONENT=4;
+	public static final int PRACTICE_EXPONENT=5;
+	public static final int DRY_EXPONENT=6;
+	public static final int ALLERGIC_EXPONENT=7;
+	//天气类相关常量
+	
+	//获取数据方法集//
+	public String getCity(){
+		return weatherInfo.get("city");
+	}
+	
+	public String getDegreeString(int day){
+		return weatherInfo.get("temp"+day);
+	}
+	
+	public String getMaxDegreeInDay(int day){
+		String []tmp=weatherInfo.get("temp"+day).split("~");
+		return tmp[0];
+	}
+	public String getMinDegreeInDay(int day){
+		String []tmp=weatherInfo.get("temp"+day).split("~");
+		return tmp[1];
+	}
+	public String GetWeatherString(int day){
+		return weatherInfo.get("weather"+day);
+	}
+	public String getImageId(int day,int dayOrNight){
+		if(dayOrNight==DAY){
+			return weatherInfo.get("img"+day);
+		}
+		return weatherInfo.get("img"+(day+6));
+	}
+	public String getImageTitle(int day,int dayOrNight){
+		if(dayOrNight==DAY){
+			return weatherInfo.get("img_title"+day);
+		}
+		return weatherInfo.get("img_title"+(day+6));
+	}
+	public String getWindDescription(int day){
+		return weatherInfo.get("wind"+day);
+	}
+	public String getWindLevelDescription(int day){
+		return weatherInfo.get("fl"+day);
+	}
+	
+	public String getExponent(int exponentId){
+		switch(exponentId){
+		case CLOTH_EXPONENT:
+			return weatherInfo.get("index");
+		case ULTRAVIOLET_EXPONENT:
+			return weatherInfo.get("index_uv");
+		case WASH_CAR_EXPONENT:
+			return weatherInfo.get("index_xc");
+		case TRAVEL_EXPONENT:
+			return weatherInfo.get("index_tr");
+		case COMFORTABLE_EXPONENT:
+			return weatherInfo.get("index_co");
+		case PRACTICE_EXPONENT:
+			return weatherInfo.get("index_cl");
+		case DRY_EXPONENT:
+			return weatherInfo.get("index_ls");
+		case ALLERGIC_EXPONENT:
+			return weatherInfo.get("index_ag");
+		}
+		return null;
+	}
+	
+	//获取数据方法集//
 	public WeatherDataManager(){
 		weatherInfo=new HashMap<String,String>();
 	}

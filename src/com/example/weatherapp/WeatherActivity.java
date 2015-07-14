@@ -19,8 +19,8 @@ public class WeatherActivity extends Activity {
         
         WeatherDataManager weatherManage=new WeatherDataManager();
         weatherManage.HttpGetData();
+        System.out.println(weatherManage.getExponent(WeatherDataManager.TRAVEL_EXPONENT));
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -28,5 +28,4 @@ public class WeatherActivity extends Activity {
         getMenuInflater().inflate(R.menu.weather, menu);
         return true;
     }
-    
 }
