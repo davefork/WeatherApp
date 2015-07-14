@@ -24,16 +24,16 @@ public class DBManager {
 	}
 	//获取所有城市的名字， 方便列表
 	public Cursor getAllCity(){
-		Cursor cr=database.rawQuery("select * from weather", null);
+		Cursor cr=database.rawQuery("select * from citys", null);
 		return cr;
 	}
 
 	//获取城市的Code
 	public int getCityCode(String cityName){
-		Cursor cr=database.rawQuery("select * from weather where city='"+cityName+"'", null);
+		Cursor cr=database.rawQuery("select * from citys where name='"+cityName+"'", null);
 		while(cr.moveToNext()){
-			if(cr.getInt(1)>10000000){
-				return cr.getInt(1);
+			if(cr.getInt(3)>10000000){
+				return cr.getInt(3);
 			}
 		}
 		return -1;
@@ -54,7 +54,7 @@ public class DBManager {
 	            pmsPaht.mkdirs();
 	            
 	            AssetManager am = this.context.getAssets(); 
-	            InputStream is= am.open("weather.db");
+	            InputStream is= am.open("db_weather.db");
 
 				FileOutputStream fos = new FileOutputStream(gpsPath);
 				 
