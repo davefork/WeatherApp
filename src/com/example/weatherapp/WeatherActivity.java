@@ -1,5 +1,8 @@
 package com.example.weatherapp;
 
+import java.util.Iterator;
+import java.util.List;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -17,7 +20,9 @@ public class WeatherActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
-    
+        DBManager db=new DBManager(this.getApplicationContext());
+        db.openWeaterDB();
+        
     }
 
     @Override
