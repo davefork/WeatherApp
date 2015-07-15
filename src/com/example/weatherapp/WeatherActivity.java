@@ -20,9 +20,7 @@ public class WeatherActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
-        DBManager db=new DBManager(this.getApplicationContext());
-        db.openWeaterDB();
-        
+
     }
 
     @Override
