@@ -27,6 +27,8 @@ public class WeatherDataManager {
 	public static final int PRACTICE_EXPONENT=5;
 	public static final int DRY_EXPONENT=6;
 	public static final int ALLERGIC_EXPONENT=7;
+	
+	public static final int NUM_OF_EXPONENT=8;
 	//天气类相关常量
 	
 	//获取数据方法集//
@@ -96,6 +98,10 @@ public class WeatherDataManager {
 		return null;
 	}
 	
+	public int getNumOfExponent(){
+		return NUM_OF_EXPONENT;
+	}
+	
 	//获取数据方法集//
 	public WeatherDataManager(){
 		weatherInfo=new HashMap<String,String>();
@@ -139,7 +145,7 @@ public class WeatherDataManager {
 			JSONObject tmp=new JSONObject(jsonObject.getString("weatherinfo"));
 			Iterator itKey=tmp.keys(); 
 			weatherInfo= new HashMap<String,String>();
-			 while( itKey.hasNext())
+			 while(itKey.hasNext())
 		     {
 			 	key=itKey.next().toString();
 			 	value=tmp.getString(key);
@@ -149,6 +155,5 @@ public class WeatherDataManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
     }
 }
