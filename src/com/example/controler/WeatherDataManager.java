@@ -38,6 +38,10 @@ public class WeatherDataManager {
 		return weatherInfo.get("temp"+day);
 	}
 	
+	public String getWeek(){
+		return weatherInfo.get("week");
+	}
+	
 	public String getMaxDegreeInDay(int day){				//获取最高温字符串
 		String []tmp=weatherInfo.get("temp"+day).split("~");
 		return tmp[0];
@@ -49,12 +53,14 @@ public class WeatherDataManager {
 	public String GetWeatherString(int day){				//天气汉字描述
 		return weatherInfo.get("weather"+day);
 	}
+	
 	public String getImageId(int day,int dayOrNight){	   //获取图片的名字
 		if(dayOrNight==DAY){
 			return weatherInfo.get("img"+day);
 		}
 		return weatherInfo.get("img"+(day+6));
 	}
+	
 	public String getImageTitle(int day,int dayOrNight){	//获取每个图片对应的解释信息
 		if(dayOrNight==DAY){
 			return weatherInfo.get("img_title"+day);
