@@ -3,6 +3,8 @@ package com.example.weatherapp;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
+import android.view.Menu;
 import android.view.Menu;
 import android.widget.Gallery;
 import android.widget.ListView;
@@ -11,11 +13,12 @@ import android.widget.ListView;
 //-------个人包-------//
 import com.example.controler.*;
 
-//-------个人包-------//
 
+//-------个人包-------//
 public class WeatherActivity extends Activity {
+	private ListView mainList;
+	//private RefreshableView refreshView;
 	Gallery g;
-	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -54,6 +54,7 @@ public class DBManager {
 			
 		}		
 	}
+	//创建收藏城市数据库
 	public int createCollectionDB(Context context)
 	{	
 		DbHelper dbHelper = new DbHelper(context,"collectcity");
@@ -63,10 +64,12 @@ public class DBManager {
 		
 		return 0;
 	}
+	//获取DbHelper类
 	public DbHelper getDbHelper()
 	{
 		return dbhelper;
 	}
+	//添加城市
 	public int addCity(String cityName)
 	{
 		SQLiteDatabase db_collection;
@@ -77,6 +80,7 @@ public class DBManager {
 		System.out.println("add city");
 		return 0;
 	}
+	//删除城市
 	public int deleteCity(String cityName)
 	{
 		SQLiteDatabase db_collection;
@@ -85,6 +89,7 @@ public class DBManager {
 		System.out.println("delete city");
         return db_collection.delete("collection", "name=?", args);
 	}
+	//获取收藏城市集合
 	public List<String> getCollection()
 	{
 		//清空收藏城市集合
@@ -121,9 +126,8 @@ public class DBManager {
 		
 	}
 	
-	/**
-     * 返回 省份集合
-     */
+	// 返回 省份集合
+     
 	public List<String> getProSet(){
        //打开数据库 
  		Cursor cursor=db_weather.query("provinces", null, null, null, null, null, null);
@@ -134,9 +138,8 @@ public class DBManager {
  	
     	return proset;
     }
-	    /**
-	     * 返回 城市集合
-	     */
+  
+    //返回城市集合
     public List<String> getCitSet(int pro_id){
     	//清空城市集合
     	citset.clear();
@@ -148,7 +151,8 @@ public class DBManager {
  		}
     	return citset;
     } 
-	public void openWeaterDB() 
+	//打开天气数据库
+    public void openWeatherDB() 
 	{ 
         File sdFile = Environment.getExternalStorageDirectory();
         File gpsPath = new File(sdFile.getPath()+"/weatherApp/weather.db");
@@ -193,5 +197,6 @@ public class DBManager {
 		this.db_weather.close(); 
 		}
 	}
+	
 }
 

@@ -2,4 +2,6 @@
 
 <resources>
     <color name="click">#ffffff</color>
+    <color name="grid_border">#ffffffff</color>
+    <color name="white">#ffffffff</color>
 </resources>

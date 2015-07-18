@@ -1,0 +1,15 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+	<ListView
+	        android:id="@+id/city_list"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:cacheColorHint="@android:color/transparent"
+	        android:fadingEdge="none" >
+	    </ListView>
+	   <!--  android:background="@drawable/selector"  自定义listview 样式-->
+
+</LinearLayout>
