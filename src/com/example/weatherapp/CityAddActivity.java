@@ -2,7 +2,7 @@ package com.example.weatherapp;
 
 import java.util.List;
 
-import com.example.content.CityList;
+import com.example.myview.*;
 import com.example.controler.DBManager;
 
 

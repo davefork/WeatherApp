@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".ListTestActivity" >
 
-	<com.example.content.TitleBar
+	<com.example.myview.TitleBar
         android:id="@+id/title_bar"
         android:layout_width="fill_parent"
         android:layout_height="50dip"    

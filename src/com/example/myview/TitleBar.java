@@ -1,4 +1,4 @@
-package com.example.content;
+package com.example.myview;
 
 
 import com.example.weatherapp.R;

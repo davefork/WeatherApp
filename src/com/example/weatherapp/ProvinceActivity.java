@@ -1,6 +1,5 @@
 package com.example.weatherapp;
 
-import com.example.content.CityList;
 import com.example.controler.DBManager;
 
 

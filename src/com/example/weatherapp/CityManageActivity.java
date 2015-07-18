@@ -1,12 +1,12 @@
 package com.example.weatherapp;
 
-import com.example.content.TitleBar;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import com.example.controler.DBManager;
+import com.example.myview.TitleBar;
 
 import android.app.Activity;
 import android.content.Context;

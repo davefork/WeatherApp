@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     tools:context=".WeatherActivity" >
 
-    
      <com.example.myview.RefreshableView  
         android:id="@+id/refreshView"  
         android:layout_width="fill_parent"  
