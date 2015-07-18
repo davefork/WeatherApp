@@ -12,10 +12,11 @@ import android.widget.ListView;
 //-------个人包-------//
 import com.example.controler.*;
 //-------个人包-------//
+import com.example.myview.RefreshableView;
 
 public class WeatherActivity extends Activity {
 	private ListView mainList;
-	//private RefreshableView refreshView;
+	private RefreshableView refreshView;
 	
 	private  WeatherDataManager weatherManager;
     @Override
@@ -23,13 +24,6 @@ public class WeatherActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
 
-        //DBManager db=new DBManager(this.getApplicationContext());
-        
-        //MapManager map = new MapManager(WeatherActivity.this);
-       // map.buildMap();
-        Intent i = new Intent();
-        i.setClass(WeatherActivity.this, CityManageActivity.class);
-        startActivity(i);
     }
 
     @Override
