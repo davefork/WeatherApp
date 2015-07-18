@@ -74,7 +74,7 @@ class myAdapter extends BaseAdapter{
     private WeatherDataManager wData=new WeatherDataManager();
     
     public myAdapter(Context c) throws IllegalArgumentException, IllegalAccessException{  
-        mContext = c; 
+        mContext = c;  
         wData.HttpGetData();
         try {
 			Thread.sleep(1000);
