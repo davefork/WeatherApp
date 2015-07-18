@@ -186,8 +186,6 @@ public class DBManager {
 	        }
         db_weather = SQLiteDatabase.openOrCreateDatabase(gpsPath, null);   
 	    }
-
-	 
 	public void close()
 	{
 		if (db_weather != null)
