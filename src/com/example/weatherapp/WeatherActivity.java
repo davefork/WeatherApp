@@ -4,13 +4,20 @@ package com.example.weatherapp;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-
 import android.view.Menu;
+import android.view.Menu;
+import android.widget.ListView;
 
+
+//-------个人包-------//
+import com.example.controler.*;
 //-------个人包-------//
 
 public class WeatherActivity extends Activity {
-
+	private ListView mainList;
+	//private RefreshableView refreshView;
+	
+	private  WeatherDataManager weatherManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +30,6 @@ public class WeatherActivity extends Activity {
         Intent i = new Intent();
         i.setClass(WeatherActivity.this, CityManageActivity.class);
         startActivity(i);
-
     }
 
     @Override
