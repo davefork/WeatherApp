@@ -58,6 +58,7 @@ public class gallery extends Activity{
 			@Override
 			public void onItemClick(AdapterView parent,View v,int position,long id) {
 				// TODO 自动生成的方法存根
+				mGallery.setBackgroundColor(Color.BLACK);
 				//v.setBackgroundColor(Color.BLACK);
 				//v.setBackgroundColor(getResources().getColor(R.color.click));
 			}
@@ -105,7 +106,7 @@ class myAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View con, ViewGroup arg2) {
 		// TODO 自动生成的方法存根
-		TextView day,des,dPicDes,nPicDes,windDes,windLevel;
+		TextView day,des,dPicDes,nPicDes;
 		ImageView dImg,nImg;
 		
 		if(con==null){
@@ -118,10 +119,8 @@ class myAdapter extends BaseAdapter{
 		nImg=(ImageView) con.findViewById(R.id.nPic);
 		dPicDes=(TextView)con.findViewById(R.id.dPicDes);
 		nPicDes=(TextView)con.findViewById(R.id.nPicDes);
-		windDes=(TextView)con.findViewById(R.id.windDes);
 
 		//显示星期
-		//System.out.println();
 		String today=wData.getWeek();
 		int dayNum=-1;
 		
@@ -147,8 +146,13 @@ class myAdapter extends BaseAdapter{
 			case 0: thisDay="星期日";break;
 		}
 		
-		day.setText(thisDay);
-		des.setText(wData.GetWeatherString(position+1));//显示天气描述
+		if(position==0){
+			day.setText("今天");
+		}else{
+			day.setText(thisDay);
+		}
+		
+		des.setText("------");//分割线
 		
 		//两张图片
 		int dWeatherId=Integer.parseInt(wData.getImageId(position+1,0));
@@ -159,7 +163,6 @@ class myAdapter extends BaseAdapter{
 		//
 		dPicDes.setText(wData.getImageTitle(position+1,0));
 		nPicDes.setText(wData.getImageTitle(position+1,1));
-		//windDes.setText(wData.getWindDescription(position+1));
 		
 		
 		return con;

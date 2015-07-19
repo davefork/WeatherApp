@@ -27,6 +27,7 @@ public class WeatherActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sforcast);
         g=(Gallery) findViewById(R.id.gallery1);
+        
         try {
 			g.setAdapter(new myAdapter(this));
 		} catch (IllegalArgumentException e) {
