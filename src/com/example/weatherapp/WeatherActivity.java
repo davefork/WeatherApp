@@ -12,31 +12,36 @@ import android.widget.ListView;
 
 //-------个人包-------//
 import com.example.controler.*;
+import com.example.myview.MainUI;
 //-------个人包-------//
 import com.example.myview.RefreshableView;
 
 
 //-------个人包-------//
 public class WeatherActivity extends Activity {
-	private ListView mainList;
-
-	//private RefreshableView refreshView;
-	Gallery g;
+	private MainUI mainLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sforcast);
-        g=(Gallery) findViewById(R.id.gallery1);
+//<<<<<<< HEAD
+//        setContentView(R.layout.sforcast);
+//        g=(Gallery) findViewById(R.id.gallery1);
+//        
+//        try {
+//			g.setAdapter(new myAdapter(this));
+//		} catch (IllegalArgumentException e) {
+//			// TODO 自动生成的 catch 块
+//			e.printStackTrace();
+//		} catch (IllegalAccessException e) {
+//			// TODO 自动生成的 catch 块
+//			e.printStackTrace();
+//		}
+//=======
         
-        try {
-			g.setAdapter(new myAdapter(this));
-		} catch (IllegalArgumentException e) {
-			// TODO 自动生成的 catch 块
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO 自动生成的 catch 块
-			e.printStackTrace();
-		}
+        mainLayout=new MainUI(this);
+        setContentView(mainLayout);
+    
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
