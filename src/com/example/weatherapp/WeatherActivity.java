@@ -12,18 +12,20 @@ import android.widget.ListView;
 
 //-------个人包-------//
 import com.example.controler.*;
+import com.example.myview.MainUI;
 //-------个人包-------//
 import com.example.myview.RefreshableView;
 
 
 //-------个人包-------//
 public class WeatherActivity extends Activity {
-	private ListView mainList;
-	//private RefreshableView refreshView;
+	private MainUI mainLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sforcast);
+        
+        mainLayout=new MainUI(this);
+        setContentView(mainLayout);
     
     }
     @Override
