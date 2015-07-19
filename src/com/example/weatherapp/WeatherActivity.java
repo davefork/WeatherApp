@@ -24,7 +24,7 @@ public class WeatherActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sforcast);
-
+    
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
