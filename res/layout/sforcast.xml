@@ -14,13 +14,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#80666666"/>
-
+    
     <com.example.weatherapp.seven
         android:id="@+id/lineChart"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:layout_below="@id/gallery1"
+        android:layout_width="300dp"
+        android:layout_height="147dp"
         android:background="#80666666"/>
+    
 
+    
 </LinearLayout>
     

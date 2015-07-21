@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 public class WeatherDataManager {
 	private Map<String,String> weatherInfo;
+	private static WeatherDataManager wm=null;
 	//天气类相关常量
 	public static final int DAY=0;
 	public static final int NIGHT=1;
@@ -30,6 +31,16 @@ public class WeatherDataManager {
 	
 	public static final int NUM_OF_EXPONENT=8;
 	//天气类相关常量
+	
+	public static WeatherDataManager getWeatherDataManager(){
+		if(wm==null){
+			wm=new WeatherDataManager();
+			wm.HttpGetData();
+		}
+		return wm;
+	}
+	
+	
 	
 	//获取数据方法集//
 	public String getCity(){								//获取城市名字

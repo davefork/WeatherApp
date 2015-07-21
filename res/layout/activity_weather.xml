@@ -3,18 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".WeatherActivity" >
-    
+
      <com.example.myview.RefreshableView  
         android:id="@+id/refreshView"  
         android:layout_width="fill_parent"  
         android:layout_height="fill_parent" >  
-  
          <ListView
 	        android:id="@+id/mainList"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:scrollbars="none">
     	</ListView>
-    </com.example.myview.RefreshableView>  
-   
+    </com.example.myview.RefreshableView>    
+
 </FrameLayout>

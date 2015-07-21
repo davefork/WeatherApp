@@ -1,10 +1,12 @@
-package com.example.weatherapp;
+package com.example.adapter;
 
 import java.util.ArrayList;
 
 
 import com.example.controler.WeatherDataManager;
 import com.example.weatherapp.R;
+import com.example.weatherapp.R.id;
+import com.example.weatherapp.R.layout;
 
 
 import android.app.Activity;
@@ -24,65 +26,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class gallery extends Activity{
-	private Gallery mGallery;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO 自动生成的方法存根
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.sforcast);
-		
-		mGallery = (Gallery)findViewById(R.id.gallery1);
-		
-		try {
-			mGallery.setAdapter(new myAdapter(this));
-		} catch (IllegalArgumentException e) {
-			// TODO 自动生成的 catch 块
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO 自动生成的 catch 块
-			e.printStackTrace();
-		}
-//		mGallery.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				// TODO 自动生成的方法存根
-//				v.setBackgroundColor(getResources().getColor(R.color.click));
-//				mGallery.setBackgroundColor(getResources().getColor(R.color.click));
-//			}
-//		});
-		mGallery.setOnItemClickListener(new OnItemClickListener(){
-
-			@Override
-			public void onItemClick(AdapterView parent,View v,int position,long id) {
-				// TODO 自动生成的方法存根
-				//v.setBackgroundColor(Color.BLACK);
-				//v.setBackgroundColor(getResources().getColor(R.color.click));
-			}
-			
-		});
-	}
-}
-
-class myAdapter extends BaseAdapter{
+public class LineChartAdapter extends BaseAdapter{
 	private Context mContext;  
     private ArrayList<Integer> imgList=new ArrayList<Integer>();  
     private ArrayList<Object> imgSizes=new ArrayList<Object>();
     
-    private WeatherDataManager wData=new WeatherDataManager();
+    private WeatherDataManager wData;
     
-    public myAdapter(Context c) throws IllegalArgumentException, IllegalAccessException{  
+    public LineChartAdapter(Context c,WeatherDataManager wData){  
         mContext = c;  
-        wData.HttpGetData();
-        try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO 自动生成的 catch 块
-			e.printStackTrace();
-		}
-}
+        this.wData=wData;
+    }
 
 	@Override
 	public int getCount() {
@@ -105,7 +60,7 @@ class myAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View con, ViewGroup arg2) {
 		// TODO 自动生成的方法存根
-		TextView day,des,dPicDes,nPicDes,windDes,windLevel;
+		TextView day,des,dPicDes,nPicDes;
 		ImageView dImg,nImg;
 		
 		if(con==null){
@@ -118,10 +73,8 @@ class myAdapter extends BaseAdapter{
 		nImg=(ImageView) con.findViewById(R.id.nPic);
 		dPicDes=(TextView)con.findViewById(R.id.dPicDes);
 		nPicDes=(TextView)con.findViewById(R.id.nPicDes);
-		windDes=(TextView)con.findViewById(R.id.windDes);
 
 		//显示星期
-		//System.out.println();
 		String today=wData.getWeek();
 		int dayNum=-1;
 		
@@ -147,8 +100,13 @@ class myAdapter extends BaseAdapter{
 			case 0: thisDay="星期日";break;
 		}
 		
-		day.setText(thisDay);
-		des.setText(wData.GetWeatherString(position+1));//显示天气描述
+		if(position==0){
+			day.setText("今天");
+		}else{
+			day.setText(thisDay);
+		}
+		
+		des.setText("------");//分割线
 		
 		//两张图片
 		int dWeatherId=Integer.parseInt(wData.getImageId(position+1,0));
@@ -159,7 +117,6 @@ class myAdapter extends BaseAdapter{
 		//
 		dPicDes.setText(wData.getImageTitle(position+1,0));
 		nPicDes.setText(wData.getImageTitle(position+1,1));
-		//windDes.setText(wData.getWindDescription(position+1));
 		
 		
 		return con;

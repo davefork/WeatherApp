@@ -3,12 +3,14 @@ package com.example.adapter;
 import com.example.controler.WeatherDataManager;
 import com.example.myview.LineGridView;
 import com.example.weatherapp.R;
+import com.example.weatherapp.seven;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Gallery;
 import android.widget.TextView;
 
 public class WeatherMainListview extends BaseAdapter{
@@ -16,6 +18,11 @@ public class WeatherMainListview extends BaseAdapter{
 	
 	private static class ExponenteHolder{
 		LineGridView exponenteGird;
+	}
+	private static class LineChartHolder{
+		Gallery gallery;
+		seven lineChart;
+		TextView lineChartTitle;
 	}
 	
 	
@@ -43,11 +50,32 @@ public class WeatherMainListview extends BaseAdapter{
         // TODO Auto-gene	rated method stub
         return 0;
     }
+    
+    @Override
+    public int getViewTypeCount() {
+    	// TODO Auto-generated method stub
+    	return 3;
+    }
+    
+    @Override
+    public int getItemViewType(int position) {
+    	// TODO Auto-generated method stub
+    	switch(position){
+    	case 0:
+    		return 0;
+    	case 1:
+    		return 1;
+    	case 2:
+    		return 2;
+    	}
+    	return 0;
+    }
 
 	@Override
 	
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ExponenteHolder expHolder;
+		LineChartHolder lineChartHolder;
 		switch(position){
 		case 0:
 			if (convertView == null) {
@@ -63,20 +91,40 @@ public class WeatherMainListview extends BaseAdapter{
 			break;
 		case 1:
 			if (convertView == null) {
-				expHolder=new ExponenteHolder();
-				convertView =mInflater.inflate(R.layout.exponent_grid, null);
-				expHolder.exponenteGird=(LineGridView) convertView.findViewById(R.id.exp_grid);
-				
-				expHolder.exponenteGird.setAdapter(new ExponenteAdapter(mInflater.getContext(),weatherManager));
-				
-				convertView.setTag(expHolder);
+				lineChartHolder=new LineChartHolder();
+				System.out.println("1");
+				convertView =mInflater.inflate(R.layout.sforcast, null);
+				System.out.println("2");
+				lineChartHolder.gallery=(Gallery) convertView.findViewById(R.id.gallery1);
+				lineChartHolder.lineChart=(seven)convertView.findViewById(R.id.lineChart);
+				//lineChartHolder.lineChartTitle=(TextView)convertView.findViewById(R.id.lineChartTitle);
+				System.out.println("3");
+				lineChartHolder.gallery.setAdapter(new LineChartAdapter(mInflater.getContext(),weatherManager));
+				System.out.println("4");
+				convertView.setTag(lineChartHolder);
 				
 	        }else {
-	        	expHolder=(ExponenteHolder) convertView.getTag();
+	        	lineChartHolder=(LineChartHolder) convertView.getTag();
 	        }
+//			if (convertView == null) {
+//				expHolder=new ExponenteHolder();
+//				convertView =mInflater.inflate(R.layout.exponent_grid, null);
+//				expHolder.exponenteGird=(LineGridView) convertView.findViewById(R.id.exp_grid);
+//				expHolder.exponenteGird.setAdapter(new ExponenteAdapter(mInflater.getContext(),weatherManager));
+//				convertView.setTag(expHolder);
+//				
+//	        }else {
+//	        	expHolder=(ExponenteHolder) convertView.getTag();
+//	        }
 			break;
 		case 2:
 			if (convertView == null) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				expHolder=new ExponenteHolder();
 				convertView =mInflater.inflate(R.layout.exponent_grid, null);
 				expHolder.exponenteGird=(LineGridView) convertView.findViewById(R.id.exp_grid);
@@ -85,8 +133,7 @@ public class WeatherMainListview extends BaseAdapter{
 				
 	        }else {
 	        	expHolder=(ExponenteHolder) convertView.getTag();
-	        }
-			
+	        }	
 			break;
 		}
 		

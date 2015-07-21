@@ -13,31 +13,37 @@
 		android:id="@+id/day"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:gravity="center"/>
-		   
-	<TextView
-		android:id="@+id/des"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:gravity="center"/>
-		
-	<ImageView
-       android:id="@+id/dPic"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:contentDescription="description"
-       android:src="@drawable/pic_id" />
+		android:gravity="center"
+		android:textColor="@color/orange"
+		android:textSize="@dimen/gallery_textsize"/>
 	
 	<TextView
 		android:id="@+id/dPicDes"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:gravity="center"/>
+		android:gravity="center"
+		android:textColor="@color/white"
+		android:textSize="@dimen/gallery_textsize"/>
+		
+	<ImageView
+       android:id="@+id/dPic"
+       android:layout_width="@dimen/gallery_img_size"
+       android:layout_height="@dimen/gallery_img_size"
+       android:contentDescription="description"
+       android:src="@drawable/pic_id" />
+	
+	<TextView
+		android:id="@+id/des"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:textColor="@color/white"
+		android:textSize="@dimen/gallery_textsize"/>
 	
 	<ImageView
        android:id="@+id/nPic"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
+       android:layout_width="@dimen/gallery_img_size"
+       android:layout_height="@dimen/gallery_img_size"
        android:contentDescription="description"
        android:src="@drawable/pic_id" />
 	
@@ -45,14 +51,10 @@
 		android:id="@+id/nPicDes"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:gravity="center"/>
+		android:gravity="center"
+		android:textColor="@color/white"
+		android:textSize="@dimen/gallery_textsize"/>
 	
-	<TextView
-		android:id="@+id/windDes"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:maxEms="4"
-		android:singleLine="false"
 		/>
 	
 </LinearLayout>
