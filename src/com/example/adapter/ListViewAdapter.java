@@ -17,16 +17,18 @@ public class ListViewAdapter extends BaseAdapter
 {
 	View[] itemViews;
 	Context context;
+
 	public ListViewAdapter(List<cityInfo>mlistInfo,Context context)
 	{
-		itemViews = new View[mlistInfo.size()];
 		this.context = context;
+		itemViews=new View[mlistInfo.size()]; 
 		for(int i=0;i<mlistInfo.size();i++){
 			cityInfo getInfo = (cityInfo)mlistInfo.get(i);
 			itemViews[i]=makeItemView(
 					getInfo.getTitle(),getInfo.getDetails(),getInfo.getAvatar());
 		}
 	}
+
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub

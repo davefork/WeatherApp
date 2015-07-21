@@ -3,14 +3,19 @@ package com.example.adapter;
 import com.example.controler.WeatherDataManager;
 import com.example.myview.LineGridView;
 import com.example.weatherapp.R;
+import com.example.weatherapp.WeatherActivity;
 import com.example.weatherapp.seven;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
+import android.widget.AbsListView.LayoutParams;
 import android.widget.Gallery;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class WeatherMainListview extends BaseAdapter{
@@ -87,7 +92,18 @@ public class WeatherMainListview extends BaseAdapter{
 		case 0:
 			if (convertView == null) {
 				weatherInfoHolder=new WeatherInfoHolder();
-				convertView =mInflater.inflate(R.layout.activity_weather_main, null);
+				//RelativeLayout vg=new RelativeLayout(mInflater.getContext());
+				//vg.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,  (int)(WeatherActivity.height*0.8)));
+				//***********注意类型一定要写对！！！！LayoutParams的！！！！！*******************//
+				convertView =mInflater.inflate(R.layout.activity_weather_main,null);
+				LayoutParams titleParams=new LayoutParams(MarginLayoutParams.MATCH_PARENT, (int)(WeatherActivity.height*0.9));
+				
+				convertView.setLayoutParams(titleParams);
+				//FrameLayout layout=(FrameLayout) convertView.findViewById(R.id.weather_info_layout);
+				//convertView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,  (int)(WeatherActivity.height*0.8)));
+				//LayoutParams params=new LayoutParams(MarginLayoutParams.MATCH_PARENT, (int)(WeatherActivity.height*0.2));	
+				//layout.setLayoutParams(params);
+				
 				weatherInfoHolder.twoDaysGird=(LineGridView) convertView.findViewById(R.id.two_day_info);
 				weatherInfoHolder.twoDaysGird.setAdapter(new TwoDaysInfoAdapter(mInflater.getContext(),weatherManager));
 				weatherInfoHolder.degree=(TextView) convertView.findViewById(R.id.degree);

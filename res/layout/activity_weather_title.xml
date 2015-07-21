@@ -3,11 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-    
     <RelativeLayout 
         android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:background="#ffff0000">
+    	>
         <ImageView 
             android:layout_width="@dimen/mainlayout_title_img_size"
     		android:layout_height="@dimen/mainlayout_title_img_size"
@@ -26,6 +25,7 @@
     		android:layout_margin="13dp"
     		android:src="@drawable/share"/>
     </RelativeLayout>
-	
+
+   
 
 </FrameLayout>

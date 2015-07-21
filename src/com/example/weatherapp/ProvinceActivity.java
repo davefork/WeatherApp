@@ -22,6 +22,11 @@ public class ProvinceActivity extends Activity{
         init();
        
     }    
+    protected void onStop() {
+    	// TODO Auto-generated method stub
+    	super.onStop();
+    	finish();
+    }
 	   private void init(){
 		   final ListView mProvinceList = (ListView) findViewById(R.id.city_list);
 		   db = new DBManager(this.getApplicationContext());
@@ -38,6 +43,7 @@ public class ProvinceActivity extends Activity{
 					
 				}
 	   });
+			db.close();
 	   
    
     }

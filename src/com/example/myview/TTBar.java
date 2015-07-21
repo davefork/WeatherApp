@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class TTBar extends LinearLayout {
- 	private ImageView btn_left;
     private ImageView btn_right;
     private TextView tv_title;
  
@@ -28,23 +27,14 @@ public class TTBar extends LinearLayout {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout=layoutInflater.inflate(R.layout.title_bar, null);
         addView(layout);
-        btn_left = (ImageView) findViewById(R.id.back);
+        
         btn_right = (ImageView) findViewById(R.id.add);
         tv_title = (TextView) findViewById(R.id.title);
-        btn_left.setClickable(true);
+  
         btn_right.setClickable(true);
  
     }
-    public TTBar(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
-    
-    public void setBtnleftImage(int res)
-    {
-    	if (btn_left != null) {
-            btn_left.setImageResource(res);
-        }
-    }
+
  
     public void setBtnRightImage(int res)
     {
@@ -59,9 +49,7 @@ public class TTBar extends LinearLayout {
         }
     }
  
-    public ImageView getBtn_left() {
-        return btn_left;
-    }
+   
  
     public ImageView getBtn_right() {
         return btn_right;

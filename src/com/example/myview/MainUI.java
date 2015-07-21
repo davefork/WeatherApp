@@ -10,13 +10,10 @@ import com.example.controler.DBManager;
 import com.example.controler.WeatherDataManager;
 import com.example.controler.cityInfo;
 import com.example.myview.RefreshableView.PullToRefreshListener;
-import com.example.weatherapp.CityManageActivity;
-import com.example.weatherapp.ProvinceActivity;
 import com.example.weatherapp.R;
+import com.example.weatherapp.WeatherActivity;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.ContextMenu;
@@ -24,11 +21,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.View.OnClickListener;
-import android.view.View.OnCreateContextMenuListener;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -44,11 +38,6 @@ public class MainUI extends RelativeLayout{
 	private FrameLayout middlePart;
 	private Scroller mScroller;
 	
-	
-	
-	
-
-	
 	//---------------初始化界面的变量！！！------------------//
 	private RefreshableView refreshableView;
 	//---------------初始化界面的变量！！！------------------//
@@ -57,19 +46,26 @@ public class MainUI extends RelativeLayout{
 		super(context, attrs);
 		initView(context);
 		// TODO Auto-generated constructor stubcontext
-	}
-	
+	}	
 
 	public MainUI(Context context) {
 		super(context);
+
 		initView(context);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	//---------------初始化界面的各个部分！！！------------------//
 	private void setMiddlePart(){
 		View layoutTitle=LayoutInflater.from(context).inflate(R.layout.activity_weather_title,null);
 		View layoutMiddle=LayoutInflater.from(context).inflate(R.layout.activity_weather, null);
+		View layoutBg=LayoutInflater.from(context).inflate(R.layout.background, null);
+		//之后需要改掉的地方！！！！！！！！！！！！！！！
+		LayoutParams titleParams=new LayoutParams(MarginLayoutParams.MATCH_PARENT, (int)(WeatherActivity.height*0.2));	
+		layoutTitle.setLayoutParams(titleParams);
+		
+		
+		middlePart.addView(layoutBg);
 		middlePart.addView(layoutTitle);
 		middlePart.addView(layoutMiddle);
 		ListView lv=(ListView) layoutMiddle.findViewById(R.id.mainList);
@@ -96,17 +92,16 @@ public class MainUI extends RelativeLayout{
 	
 	
 
-	//------------------何明的监狱------------------------//
+//------------------何明的监狱------------------------//
 	private List<cityInfo> mlistInfo = new ArrayList<cityInfo>();  //声明一个list，动态存储要显示的信息  
 	private DBManager db;
 	private cityInfo getObject;
 	private TTBar tb ;
 
 ///////////////////////////////////////////////////////////////////
-	public void RefreshAllList(){
+	public void RefreshAllList(List<cityInfo> mlistInfo){
 		ListView lv=(ListView)(leftMenu.findViewById(R.id.list_collection));
-		ListViewAdapter lva=(ListViewAdapter) lv.getAdapter();
-		lva.notifyDataSetChanged();
+		lv.setAdapter(new ListViewAdapter(mlistInfo,context));
 	}
 ///////////////////////////////////////////////////////////////////
 	public ImageView getAddCityButton(){
@@ -132,7 +127,7 @@ public class MainUI extends RelativeLayout{
 		
 		Iterator it = db.getCollection().iterator();
 		int i = 0;
-		String cityName;
+		String cityName="";
 		mlistInfo.clear();   
 		while(it.hasNext()){
 			cityName = it.next().toString();
@@ -144,13 +139,29 @@ public class MainUI extends RelativeLayout{
 			mlistInfo.add(information); //将新的info对象加入到信息列表中  
 			i++;  
 		}
-		lv.setAdapter(new ListViewAdapter(mlistInfo, context));
+		lv.setAdapter(new ListViewAdapter(mlistInfo,context));
+		
+		
 		lv.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 				// TODO Auto-generated method stub
+				Iterator it = db.getCollection().iterator();
+				int i = 0;
+				String cityName="";
+				mlistInfo.clear();   
+				while(it.hasNext()){
+					cityName = it.next().toString();
+					cityInfo information = new cityInfo();  
+					information.setId(i);  
+					information.setTitle(cityName);  
+					information.setDetails(cityName+"的天气情况");  
+					information.setAvatar(R.drawable.ic_launcher);  
+					mlistInfo.add(information); //将新的info对象加入到信息列表中  
+					i++;  
+				}
 				getObject = mlistInfo.get(position);//通过position获取所点击的对象 
 				int infoId = getObject.getId();//获取信息id  
 				//Toast显示测试  
@@ -163,6 +174,20 @@ public class MainUI extends RelativeLayout{
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
+				Iterator it = db.getCollection().iterator();
+				int i = 0;
+				String cityName="";
+				mlistInfo.clear();   
+				while(it.hasNext()){
+					cityName = it.next().toString();
+					cityInfo information = new cityInfo();  
+					information.setId(i);  
+					information.setTitle(cityName);  
+					information.setDetails(cityName+"的天气情况");  
+					information.setAvatar(R.drawable.ic_launcher);  
+					mlistInfo.add(information); //将新的info对象加入到信息列表中  
+					i++;  
+				}
 				getObject = mlistInfo.get(position);
 				return false;
 			}
@@ -206,7 +231,7 @@ public class MainUI extends RelativeLayout{
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		middlePart.measure(widthMeasureSpec, heightMeasureSpec);
 		int realWidth=MeasureSpec.getSize(widthMeasureSpec);
-		int tempWidthMeasure=MeasureSpec.makeMeasureSpec((int)(realWidth*0.8f), MeasureSpec.EXACTLY); 
+		int tempWidthMeasure=MeasureSpec.makeMeasureSpec((int)(realWidth*0.85f), MeasureSpec.EXACTLY); 
 		leftMenu.measure(tempWidthMeasure, heightMeasureSpec);
 	}
 	@Override
