@@ -87,6 +87,9 @@ public class DBManager {
 		values.put("name",cityName);
 		db_collection.insert("collection", null, values);
 		System.out.println("add city");
+		dbhelper.close();
+		db_collection.close();
+		close();
 		return 0;
 	}
 	//删除城市
@@ -95,8 +98,12 @@ public class DBManager {
 		SQLiteDatabase db_collection;
 		db_collection = getDbHelper().getReadableDatabase();
 		String[] args = {cityName};
+		db_collection.delete("collection", "name=?", args);
 		System.out.println("delete city");
-        return db_collection.delete("collection", "name=?", args);
+		dbhelper.close();
+		db_collection.close();
+		close();
+        return 0;
 	}
 	//获取收藏城市集合
 	public List<String> getCollection()
@@ -111,6 +118,8 @@ public class DBManager {
  			String city=cursor.getString(cursor.getColumnIndexOrThrow("name"));
  			colset.add(city);
  		}
+ 		dbhelper.close();
+ 		cursor.close();
 		return colset;		
 	}
 	//存储最近更新天气
@@ -120,6 +129,8 @@ public class DBManager {
 		db_collection = getDbHelper().getReadableDatabase();
 		db_collection.execSQL("update collection set weather =' "+weather+"'where name = '"+
 		city+"';");
+		dbhelper.close();
+		db_collection.close();
 		return 0;
 	}
 	//获取该城市最近一次更新的天气
@@ -129,6 +140,8 @@ public class DBManager {
 		SQLiteDatabase db_collection;
 		db_collection = getDbHelper().getReadableDatabase();
 		db_collection.execSQL("");
+		dbhelper.close();
+		db_collection.close();
 		return weather;
 	}
 	public DBManager(Context context)
@@ -163,7 +176,7 @@ public class DBManager {
  			String pro=cursor.getString(cursor.getColumnIndexOrThrow("name"));
  			proset.add(pro);
  		}
- 	
+ 		cursor.close();
     	return proset;
     }
   
@@ -177,6 +190,7 @@ public class DBManager {
  			String city=cursor.getString(cursor.getColumnIndexOrThrow("name"));
  			citset.add(city);
  		}
+ 		cursor.close();
     	return citset;
     } 
 	//打开天气数据库

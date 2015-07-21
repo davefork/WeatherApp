@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class TTBar extends LinearLayout {
- 	private ImageView btn_left;
     private ImageView btn_right;
     private TextView tv_title;
  
@@ -31,16 +30,11 @@ public class TTBar extends LinearLayout {
         
         btn_right = (ImageView) findViewById(R.id.add);
         tv_title = (TextView) findViewById(R.id.title);
-        btn_left.setClickable(true);
-
+  
         btn_right.setClickable(true);
  
     }
-    public TTBar(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
-    
- 
+
  
     public void setBtnRightImage(int res)
     {

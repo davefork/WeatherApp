@@ -10,13 +10,10 @@ import com.example.controler.DBManager;
 import com.example.controler.WeatherDataManager;
 import com.example.controler.cityInfo;
 import com.example.myview.RefreshableView.PullToRefreshListener;
-import com.example.weatherapp.CityManageActivity;
-import com.example.weatherapp.ProvinceActivity;
 import com.example.weatherapp.R;
+import com.example.weatherapp.WeatherActivity;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.ContextMenu;
@@ -24,11 +21,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.View.OnClickListener;
-import android.view.View.OnCreateContextMenuListener;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -101,10 +95,9 @@ public class MainUI extends RelativeLayout{
 	private TTBar tb ;
 
 ///////////////////////////////////////////////////////////////////
-	public void RefreshAllList(){
+	public void RefreshAllList(List<cityInfo> mlistInfo){
 		ListView lv=(ListView)(leftMenu.findViewById(R.id.list_collection));
-		ListViewAdapter lva=(ListViewAdapter) lv.getAdapter();
-		lva.notifyDataSetChanged();
+		lv.setAdapter(new ListViewAdapter(mlistInfo,context));
 	}
 ///////////////////////////////////////////////////////////////////
 	public ImageView getAddCityButton(){
@@ -130,7 +123,7 @@ public class MainUI extends RelativeLayout{
 		
 		Iterator it = db.getCollection().iterator();
 		int i = 0;
-		String cityName;
+		String cityName="";
 		mlistInfo.clear();   
 		while(it.hasNext()){
 			cityName = it.next().toString();
@@ -142,13 +135,29 @@ public class MainUI extends RelativeLayout{
 			mlistInfo.add(information); //将新的info对象加入到信息列表中  
 			i++;  
 		}
-		lv.setAdapter(new ListViewAdapter(mlistInfo, context));
+		lv.setAdapter(new ListViewAdapter(mlistInfo,context));
+		
+		
 		lv.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 				// TODO Auto-generated method stub
+				Iterator it = db.getCollection().iterator();
+				int i = 0;
+				String cityName="";
+				mlistInfo.clear();   
+				while(it.hasNext()){
+					cityName = it.next().toString();
+					cityInfo information = new cityInfo();  
+					information.setId(i);  
+					information.setTitle(cityName);  
+					information.setDetails(cityName+"的天气情况");  
+					information.setAvatar(R.drawable.ic_launcher);  
+					mlistInfo.add(information); //将新的info对象加入到信息列表中  
+					i++;  
+				}
 				getObject = mlistInfo.get(position);//通过position获取所点击的对象 
 				int infoId = getObject.getId();//获取信息id  
 				//Toast显示测试  
@@ -161,6 +170,20 @@ public class MainUI extends RelativeLayout{
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
+				Iterator it = db.getCollection().iterator();
+				int i = 0;
+				String cityName="";
+				mlistInfo.clear();   
+				while(it.hasNext()){
+					cityName = it.next().toString();
+					cityInfo information = new cityInfo();  
+					information.setId(i);  
+					information.setTitle(cityName);  
+					information.setDetails(cityName+"的天气情况");  
+					information.setAvatar(R.drawable.ic_launcher);  
+					mlistInfo.add(information); //将新的info对象加入到信息列表中  
+					i++;  
+				}
 				getObject = mlistInfo.get(position);
 				return false;
 			}

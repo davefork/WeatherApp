@@ -1,6 +1,7 @@
 package com.example.weatherapp;
 
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,6 +27,29 @@ import com.example.myview.MainUI;
 //-------个人包-------//
 public class WeatherActivity extends Activity {
 	private MainUI mainLayout;
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub		
+		super.onStart();
+    	List<cityInfo> mlistInfo= new ArrayList<cityInfo>();
+    	DBManager db= new DBManager(WeatherActivity.this);
+    	db.createCollectionDB(this.getApplicationContext());
+		Iterator it = db.getCollection().iterator();
+		int i = 0;
+		String cityName="";
+		mlistInfo.clear();   
+		while(it.hasNext()){
+			cityName = it.next().toString();
+			cityInfo information = new cityInfo();  
+			information.setId(i);  
+			information.setTitle(cityName);  
+			information.setDetails(cityName+"的天气情况");  
+			information.setAvatar(R.drawable.ic_launcher);  
+			mlistInfo.add(information); //将新的info对象加入到信息列表中  
+			i++;  
+		}  
+		mainLayout.RefreshAllList(mlistInfo);
+	}
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,19 +73,19 @@ public class WeatherActivity extends Activity {
     public boolean onContextItemSelected(MenuItem aItem) {
     	AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)aItem.getMenuInfo();
     	/////////////////////////////////////////////////
-    	List<cityInfo> mlistInfo=mainLayout.getMListInfo();
-    	DBManager db=DBManager.getDBManager(WeatherActivity.this);
+    	List<cityInfo> mlistInfo= new ArrayList<cityInfo>();
+    	DBManager db=new DBManager(WeatherActivity.this);
+    	db.createCollectionDB(this.getApplicationContext());
     	///////////////////////////////////////////////////
 		switch(aItem.getItemId()){
 		case 0:
 			Toast.makeText(WeatherActivity.this, "查看这里的天气",Toast.LENGTH_SHORT).show();
 			return true;  
 		case 1:
-			DBManager.getDBManager(WeatherActivity.this).deleteCity(mainLayout.getInfo().getTitle());			
-
+			db.deleteCity(mainLayout.getInfo().getTitle());		
 			Iterator it = db.getCollection().iterator();
 			int i = 0;
-			String cityName;
+			String cityName="";
 			mlistInfo.clear();   
 			while(it.hasNext()){
 				cityName = it.next().toString();
@@ -71,9 +95,9 @@ public class WeatherActivity extends Activity {
 				information.setDetails(cityName+"的天气情况");  
 				information.setAvatar(R.drawable.ic_launcher);  
 				mlistInfo.add(information); //将新的info对象加入到信息列表中  
-				i++;  
+				i++;
 			}  
-			mainLayout.RefreshAllList();
+			mainLayout.RefreshAllList(mlistInfo);
 			Toast.makeText(WeatherActivity.this, "你删除了这个地方",Toast.LENGTH_SHORT).show();
 			return true; 
 		}
