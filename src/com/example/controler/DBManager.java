@@ -44,7 +44,7 @@ public class DBManager {
 		@Override
 		public void onCreate(SQLiteDatabase db_collection) {
 			// TODO Auto-generated method stub
-			db_collection.execSQL("create table collection (name varchar primary key);");
+			db_collection.execSQL("create table collection (name varchar primary key,weather varchar);");
 			System.out.println("create collection");
 		}
 
@@ -103,6 +103,24 @@ public class DBManager {
  			colset.add(city);
  		}
 		return colset;		
+	}
+	//存储最近更新天气
+	public int setLastWeather(String city,String weather)
+	{
+		SQLiteDatabase db_collection;
+		db_collection = getDbHelper().getReadableDatabase();
+		db_collection.execSQL("update collection set weather =' "+weather+"'where name = '"+
+		city+"';");
+		return 0;
+	}
+	//获取该城市最近一次更新的天气
+	public String getLastWeather(String city)
+	{
+		String weather = "";
+		SQLiteDatabase db_collection;
+		db_collection = getDbHelper().getReadableDatabase();
+		db_collection.execSQL("");
+		return weather;
 	}
 	public DBManager(Context context)
 	{

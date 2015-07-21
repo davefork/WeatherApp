@@ -56,13 +56,7 @@ public class CityManageActivity extends Activity{
 		tb = (TitleBar) findViewById(R.id.title_bar);
 		tb.setTvTitle("收藏的城市");
 		setInfo();
-		tb.getBtn_left().setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-			}
-		});
+		
 		tb.getBtn_right().setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -117,6 +111,7 @@ public class CityManageActivity extends Activity{
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)aItem.getMenuInfo();
 		switch(aItem.getItemId()){
 		case 0:
+			db.setLastWeather(getObject.getTitle(), "阳光明媚");
 			Toast.makeText(CityManageActivity.this, "查看这里的天气",Toast.LENGTH_SHORT).show();
 			return true;  
 		case 1:

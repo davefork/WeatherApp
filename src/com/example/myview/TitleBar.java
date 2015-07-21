@@ -2,9 +2,6 @@ package com.example.myview;
 
 
 import com.example.weatherapp.R;
-import com.example.weatherapp.R.id;
-import com.example.weatherapp.R.layout;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -15,7 +12,6 @@ import android.widget.TextView;
 
 public class TitleBar extends LinearLayout {
  
-    private ImageView btn_left;
     private ImageView btn_right;
     private TextView tv_title;
  
@@ -29,21 +25,14 @@ public class TitleBar extends LinearLayout {
  
         LayoutInflater layoutInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        layoutInflater.inflate(R.layout.title_bar, this);
-        btn_left = (ImageView) findViewById(R.id.back);
+        layoutInflater.inflate(R.layout.title_bar, this);   
         btn_right = (ImageView) findViewById(R.id.add);
-        tv_title = (TextView) findViewById(R.id.textView1);
-        btn_left.setClickable(true);
+        tv_title = (TextView) findViewById(R.id.textView1);        
         btn_right.setClickable(true);
  
     }
     
-    public void setBtnleftImage(int res)
-    {
-    	if (btn_left != null) {
-            btn_left.setImageResource(res);
-        }
-    }
+ 
  
     public void setBtnRightImage(int res)
     {
@@ -58,9 +47,7 @@ public class TitleBar extends LinearLayout {
         }
     }
  
-    public ImageView getBtn_left() {
-        return btn_left;
-    }
+   
  
     public ImageView getBtn_right() {
         return btn_right;
