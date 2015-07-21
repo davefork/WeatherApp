@@ -18,14 +18,17 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 
+import com.example.adapter.TwoDaysInfoAdapter;
 //-------个人包-------//
 import com.example.controler.*;
+import com.example.myview.LineGridView;
 import com.example.myview.MainUI;
 
 
 //-------个人包-------//
 public class WeatherActivity extends Activity {
 	private MainUI mainLayout;
+	LineGridView lgv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -24,6 +24,12 @@ public class WeatherMainListview extends BaseAdapter{
 		seven lineChart;
 		TextView lineChartTitle;
 	}
+	private static class WeatherInfoHolder{
+		LineGridView twoDaysGird;
+		TextView weatherDesc;
+		TextView windLevel;
+		TextView degree;
+	}
 	
 	
 	private LayoutInflater mInflater;
@@ -76,18 +82,25 @@ public class WeatherMainListview extends BaseAdapter{
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ExponenteHolder expHolder;
 		LineChartHolder lineChartHolder;
+		WeatherInfoHolder weatherInfoHolder;
 		switch(position){
 		case 0:
 			if (convertView == null) {
-				expHolder=new ExponenteHolder();
-				convertView =mInflater.inflate(R.layout.exponent_grid, null);
-				expHolder.exponenteGird=(LineGridView) convertView.findViewById(R.id.exp_grid);
-				expHolder.exponenteGird.setAdapter(new ExponenteAdapter(mInflater.getContext(),weatherManager));
-				convertView.setTag(expHolder);
-				
+				weatherInfoHolder=new WeatherInfoHolder();
+				convertView =mInflater.inflate(R.layout.activity_weather_main, null);
+				weatherInfoHolder.twoDaysGird=(LineGridView) convertView.findViewById(R.id.two_day_info);
+				weatherInfoHolder.twoDaysGird.setAdapter(new TwoDaysInfoAdapter(mInflater.getContext(),weatherManager));
+				weatherInfoHolder.degree=(TextView) convertView.findViewById(R.id.degree);
+				weatherInfoHolder.weatherDesc=(TextView)convertView.findViewById(R.id.weather_desc);
+				weatherInfoHolder.windLevel=(TextView)convertView.findViewById(R.id.wind_level);
+				convertView.setTag(weatherInfoHolder);
 	        }else {
-	        	expHolder=(ExponenteHolder) convertView.getTag();
+	        	weatherInfoHolder=(WeatherInfoHolder) convertView.getTag();
+	        	
 	        }
+			weatherInfoHolder.degree.setText(weatherManager.getDegreeString(position+1));
+        	weatherInfoHolder.weatherDesc.setText(weatherManager.GetWeatherString(position+1));
+        	weatherInfoHolder.windLevel.setText(weatherManager.getWindLevelDescription(position+1));
 			break;
 		case 1:
 			if (convertView == null) {
@@ -106,16 +119,7 @@ public class WeatherMainListview extends BaseAdapter{
 	        }else {
 	        	lineChartHolder=(LineChartHolder) convertView.getTag();
 	        }
-//			if (convertView == null) {
-//				expHolder=new ExponenteHolder();
-//				convertView =mInflater.inflate(R.layout.exponent_grid, null);
-//				expHolder.exponenteGird=(LineGridView) convertView.findViewById(R.id.exp_grid);
-//				expHolder.exponenteGird.setAdapter(new ExponenteAdapter(mInflater.getContext(),weatherManager));
-//				convertView.setTag(expHolder);
-//				
-//	        }else {
-//	        	expHolder=(ExponenteHolder) convertView.getTag();
-//	        }
+
 			break;
 		case 2:
 			if (convertView == null) {

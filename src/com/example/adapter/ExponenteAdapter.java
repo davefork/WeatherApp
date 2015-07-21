@@ -22,7 +22,7 @@ public class ExponenteAdapter extends BaseAdapter{
 	}  
     private Context context; 
    
-    ExponenteAdapter(Context context,WeatherDataManager wm){ 
+    public ExponenteAdapter(Context context,WeatherDataManager wm){ 
         this.context = context; 
         weatherManager=wm;
     } 

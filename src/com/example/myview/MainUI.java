@@ -68,7 +68,9 @@ public class MainUI extends RelativeLayout{
 	
 	//---------------初始化界面的各个部分！！！------------------//
 	private void setMiddlePart(){
+		View layoutTitle=LayoutInflater.from(context).inflate(R.layout.activity_weather_title,null);
 		View layoutMiddle=LayoutInflater.from(context).inflate(R.layout.activity_weather, null);
+		middlePart.addView(layoutTitle);
 		middlePart.addView(layoutMiddle);
 		ListView lv=(ListView) layoutMiddle.findViewById(R.id.mainList);
 	
