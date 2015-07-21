@@ -28,6 +28,15 @@ public class DBManager {
 	private List<String> citset=new ArrayList<String>();//城市集合
 	private List<String> colset=new ArrayList<String>();//收藏城市集合
 	
+	private static DBManager dbManager=null;
+	
+	public static DBManager getDBManager(Context context){
+		if(dbManager==null){
+			dbManager=new DBManager(context);
+		}
+		return dbManager;
+	}
+	
 	//内部dbhelper类
 	private class DbHelper extends SQLiteOpenHelper
 	{
@@ -108,6 +117,7 @@ public class DBManager {
 	{
 		this.context = context; 
 	}
+	
 	//获取所有城市的名字， 方便列表
 	public Cursor getAllCity(){
 		Cursor cr=db_weather.rawQuery("select * from citys", null);

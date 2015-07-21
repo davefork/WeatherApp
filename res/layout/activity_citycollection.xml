@@ -3,18 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    tools:context=".ListTestActivity" >
+    android:orientation="vertical" >
 
-	<com.example.myview.TitleBar
+	<com.example.myview.TTBar
         android:id="@+id/title_bar"
         android:layout_width="fill_parent"
-        android:layout_height="50dip"    
+        android:layout_height="50dp"    
         android:background="@drawable/head"      
 		 />
 	       
     <ListView
-        android:id="@+id/listView"
+        android:id="@+id/list_collection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 

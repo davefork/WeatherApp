@@ -6,7 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.example.controler.DBManager;
-import com.example.myview.TitleBar;
+import com.example.myview.TTBar;
+
 
 import android.app.Activity;
 import android.content.Context;
@@ -35,7 +36,7 @@ public class CityManageActivity extends Activity{
 	private List<info> mlistInfo = new ArrayList<info>();  //声明一个list，动态存储要显示的信息  
 	private DBManager db;
 	private info getObject;
-	private TitleBar tb ;
+	private TTBar tb ;
 	
 	@Override
 	protected void onStop() {
@@ -49,11 +50,11 @@ public class CityManageActivity extends Activity{
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_citycollection);
-		listView = (ListView) findViewById(R.id.listView);
+		listView = (ListView) findViewById(R.id.list_collection);
 		db = new DBManager(this.getApplicationContext());
 		db.openWeatherDB();
 		db.createCollectionDB(CityManageActivity.this);
-		tb = (TitleBar) findViewById(R.id.title_bar);
+		tb = (TTBar) findViewById(R.id.title_bar);
 		tb.setTvTitle("收藏的城市");
 		setInfo();
 		tb.getBtn_left().setOnClickListener(new OnClickListener() {

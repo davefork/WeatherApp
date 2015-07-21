@@ -18,20 +18,10 @@
     <com.example.weatherapp.seven
         android:id="@+id/lineChart"
         android:layout_width="300dp"
-        android:layout_height="191dp"
+        android:layout_height="147dp"
         android:background="#80666666"/>
     
-    
-    
-    <TextView 
-        android:id="@+id/tv"
-        android:layout_width="60dp"
-        android:layout_height="191dp"
-        android:background="#80666666"
-        android:textColor="@color/white"
-        android:text="\n未\n来\n五\n日\n天\n气\n预\n报\n"
-        android:gravity="center"
-        android:textSize="16dp"/>
+
     
 </LinearLayout>
     

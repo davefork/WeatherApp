@@ -1,23 +1,42 @@
 package com.example.myview;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import com.example.adapter.ListViewAdapter;
 import com.example.adapter.WeatherMainListview;
+import com.example.controler.DBManager;
 import com.example.controler.WeatherDataManager;
+import com.example.controler.cityInfo;
 import com.example.myview.RefreshableView.PullToRefreshListener;
+import com.example.weatherapp.CityManageActivity;
+import com.example.weatherapp.ProvinceActivity;
 import com.example.weatherapp.R;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.util.AttributeSet;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View.OnClickListener;
+import android.view.View.OnCreateContextMenuListener;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 public class MainUI extends RelativeLayout{
 	private Context context;
@@ -25,8 +44,12 @@ public class MainUI extends RelativeLayout{
 	private FrameLayout middlePart;
 	private Scroller mScroller;
 	
+	
+	
+	
+
+	
 	//---------------初始化界面的变量！！！------------------//
-	private WeatherDataManager wm;
 	private RefreshableView refreshableView;
 	//---------------初始化界面的变量！！！------------------//
 	
@@ -48,8 +71,8 @@ public class MainUI extends RelativeLayout{
 		View layoutMiddle=LayoutInflater.from(context).inflate(R.layout.activity_weather, null);
 		middlePart.addView(layoutMiddle);
 		ListView lv=(ListView) layoutMiddle.findViewById(R.id.mainList);
-		wm=new WeatherDataManager();
-		lv.setAdapter(new WeatherMainListview(context,wm));
+	
+		lv.setAdapter(new WeatherMainListview(context,WeatherDataManager.getWeatherDataManager()));
 		
 		
 		refreshableView = (RefreshableView) findViewById(R.id.refreshView);  
@@ -67,6 +90,95 @@ public class MainUI extends RelativeLayout{
 		 
 	}
 	
+
+	
+	
+
+	//------------------何明的监狱------------------------//
+	private List<cityInfo> mlistInfo = new ArrayList<cityInfo>();  //声明一个list，动态存储要显示的信息  
+	private DBManager db;
+	private cityInfo getObject;
+	private TTBar tb ;
+
+///////////////////////////////////////////////////////////////////
+	public void RefreshAllList(){
+		ListView lv=(ListView)(leftMenu.findViewById(R.id.list_collection));
+		ListViewAdapter lva=(ListViewAdapter) lv.getAdapter();
+		lva.notifyDataSetChanged();
+	}
+///////////////////////////////////////////////////////////////////
+	public ImageView getAddCityButton(){
+		return tb.getBtn_right();
+	}
+	public cityInfo getInfo(){
+		return getObject;
+	}
+	public List<cityInfo> getMListInfo(){
+		return mlistInfo;
+	}
+	
+	private void setLeftMenu(){
+		View layoutLeft=LayoutInflater.from(context).inflate(R.layout.activity_citycollection, null);
+		leftMenu.addView(layoutLeft);
+		ListView lv=(ListView) layoutLeft.findViewById(R.id.list_collection);
+		
+		db =DBManager.getDBManager(context);
+		db.openWeatherDB();
+		db.createCollectionDB(context);
+		tb = (TTBar) layoutLeft.findViewById(R.id.title_bar);
+		tb.setTvTitle("收藏的城市");
+		
+		Iterator it = db.getCollection().iterator();
+		int i = 0;
+		String cityName;
+		mlistInfo.clear();   
+		while(it.hasNext()){
+			cityName = it.next().toString();
+			cityInfo information = new cityInfo();  
+			information.setId(i);  
+			information.setTitle(cityName);  
+			information.setDetails(cityName+"的天气情况");  
+			information.setAvatar(R.drawable.ic_launcher);  
+			mlistInfo.add(information); //将新的info对象加入到信息列表中  
+			i++;  
+		}
+		lv.setAdapter(new ListViewAdapter(mlistInfo, context));
+		lv.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				// TODO Auto-generated method stub
+				getObject = mlistInfo.get(position);//通过position获取所点击的对象 
+				int infoId = getObject.getId();//获取信息id  
+				//Toast显示测试  
+				Toast.makeText(context, "信息ID:"+infoId,Toast.LENGTH_SHORT).show();				
+			}			
+		});
+		lv.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				getObject = mlistInfo.get(position);
+				return false;
+			}
+		});
+		//长按菜单显示
+		lv.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
+			
+			@Override
+			public void onCreateContextMenu(ContextMenu conMenu, View view,
+					ContextMenuInfo info) {
+				// TODO Auto-generated method stub
+				conMenu.setHeaderTitle("你想干嘛");
+				conMenu.add(0, 0, 0, "我要看这里的天气");
+				conMenu.add(0, 1, 1, "我要删了它");
+				}
+		});	
+	}
+	//------------------何明的监狱------------------------//
 	//---------------初始化界面的各个部分！！！------------------//
 	
 	//为了创建左右菜单，所以需要context上下文
@@ -78,8 +190,9 @@ public class MainUI extends RelativeLayout{
 		//leftMenu.setBackgroundColor(Color.RED);
 		//middlePart.setBackgroundColor(Color.GREEN);
 		addView(middlePart);
-		setMiddlePart();
 		addView(leftMenu);
+		setMiddlePart();
+		setLeftMenu();
 		
 		mScroller=new Scroller(context,new DecelerateInterpolator());
 	}
