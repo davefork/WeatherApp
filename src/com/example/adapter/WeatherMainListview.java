@@ -121,19 +121,16 @@ public class WeatherMainListview extends BaseAdapter{
 		case 1:
 			if (convertView == null) {
 				lineChartHolder=new LineChartHolder();
-				System.out.println("1");
 				convertView =mInflater.inflate(R.layout.sforcast, null);
-				System.out.println("2");
 				lineChartHolder.gallery=(Gallery) convertView.findViewById(R.id.gallery1);
 				lineChartHolder.lineChart=(seven)convertView.findViewById(R.id.lineChart);
 				//lineChartHolder.lineChartTitle=(TextView)convertView.findViewById(R.id.lineChartTitle);
-				System.out.println("3");
 				lineChartHolder.gallery.setAdapter(new LineChartAdapter(mInflater.getContext(),weatherManager));
-				System.out.println("4");
 				convertView.setTag(lineChartHolder);
 				
 	        }else {
 	        	lineChartHolder=(LineChartHolder) convertView.getTag();
+	        
 	        }
 
 			break;
@@ -153,7 +150,9 @@ public class WeatherMainListview extends BaseAdapter{
 				
 	        }else {
 	        	expHolder=(ExponenteHolder) convertView.getTag();
+	        
 	        }	
+			
 			break;
 		}
 		

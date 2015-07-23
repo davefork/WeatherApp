@@ -12,8 +12,10 @@
     		android:layout_height="@dimen/mainlayout_title_img_size"
     		android:layout_alignParentLeft="true"
     		android:layout_margin="13dp"
-    		android:src="@drawable/menu"/>
+    		android:clickable="true"
+    		android:src="@drawable/menu_selector"/>
         <TextView 
+            android:id="@+id/cityName"
             android:layout_width="wrap_content"
     		android:layout_height="wrap_content"
     		android:layout_centerInParent="true"
@@ -23,7 +25,8 @@
     		android:layout_height="@dimen/mainlayout_title_img_size"
     		android:layout_alignParentRight="true"
     		android:layout_margin="13dp"
-    		android:src="@drawable/share"/>
+    		android:clickable="true"
+    		android:src="@drawable/share_selector"/>
     </RelativeLayout>
 
    

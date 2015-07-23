@@ -36,7 +36,6 @@ public class seven extends View{
 		//画个边框
 		p.setColor(Color.WHITE);
 		canvas.drawLine(10,0+translate,10,191+translate,p);
-		canvas.drawLine(290,0+translate,290,191+translate,p);
 		
 		p.setColor(Color.argb(200,0,144,255));
 		
@@ -66,11 +65,12 @@ public class seven extends View{
 			oldMaxY=maxY;
 			oldMinY=minY;
 			//计算新的点的坐标
-			x=40+40*i;
+			x=40+50*i;
 			maxY=70+(maxAvg-maxTep[i])*5;
-			minY=140+(minAvg-minTep[i])*5;
+			minY=150+(minAvg-minTep[i])*5;
 			
-			p.setColor(Color.argb(200,0,144,255));//画笔是蓝色
+			p.setColor(Color.WHITE);//画笔是蓝色
+			p.setTextSize(12);
 			//画点
 			canvas.drawCircle(x,maxY+translate,3,p);
 			canvas.drawCircle(x,minY+translate,3,p);
@@ -81,11 +81,12 @@ public class seven extends View{
 			//画线
 			if(i>0)
 			{
-				canvas.drawLine(x-40,oldMaxY+translate,x,maxY+translate,p);
-				canvas.drawLine(x-40,oldMinY+translate,x,minY+translate,p);
+				canvas.drawLine(x-50,oldMaxY+translate,x,maxY+translate,p);
+				canvas.drawLine(x-50,oldMinY+translate,x,minY+translate,p);
 			}
 			
 			//写时间
+			p.setTextSize(16);
 			p.setColor(getResources().getColor(R.color.orange));
 			
 			String today=wData.getWeek();
@@ -114,9 +115,9 @@ public class seven extends View{
 			}
 			
 			if(i==0){
-				canvas.drawText("今天",x,20+translate,p);
+				canvas.drawText("今天",x-15,20+translate,p);
 			}else{
-				canvas.drawText(thisDay,x,20+translate,p);
+				canvas.drawText(thisDay,x-8,20+translate,p);
 			}
 		}
 	}

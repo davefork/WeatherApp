@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.example.ImageProcess.ImageProcess;
 import com.example.adapter.ListViewAdapter;
 import com.example.adapter.WeatherMainListview;
 import com.example.controler.DBManager;
@@ -15,13 +16,17 @@ import com.example.weatherapp.WeatherActivity;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -31,13 +36,16 @@ import android.widget.Scroller;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ViewFlipper;
 
 public class MainUI extends RelativeLayout{
 	private Context context;
 	private FrameLayout leftMenu;
-	private FrameLayout middlePart;
-	private Scroller mScroller;
-	
+	private SlideFrameLayout middlePart;
+	//private Scroller mScroller;
+	ListView middleMainList;
+	private boolean isBkDark=false;
+	private ImageProcess imageProcess;
 	//---------------初始化界面的变量！！！------------------//
 	private RefreshableView refreshableView;
 	//---------------初始化界面的变量！！！------------------//
@@ -60,6 +68,7 @@ public class MainUI extends RelativeLayout{
 		View layoutTitle=LayoutInflater.from(context).inflate(R.layout.activity_weather_title,null);
 		View layoutMiddle=LayoutInflater.from(context).inflate(R.layout.activity_weather, null);
 		View layoutBg=LayoutInflater.from(context).inflate(R.layout.background, null);
+		
 		//之后需要改掉的地方！！！！！！！！！！！！！！！
 		LayoutParams titleParams=new LayoutParams(MarginLayoutParams.MATCH_PARENT, (int)(WeatherActivity.height*0.2));	
 		layoutTitle.setLayoutParams(titleParams);
@@ -68,15 +77,46 @@ public class MainUI extends RelativeLayout{
 		middlePart.addView(layoutBg);
 		middlePart.addView(layoutTitle);
 		middlePart.addView(layoutMiddle);
-		ListView lv=(ListView) layoutMiddle.findViewById(R.id.mainList);
-	
-		lv.setAdapter(new WeatherMainListview(context,WeatherDataManager.getWeatherDataManager()));
 		
+		middleMainList=(ListView) layoutMiddle.findViewById(R.id.mainList);
+		
+
+		middleMainList.setAdapter(new WeatherMainListview(context,WeatherDataManager.getWeatherDataManager()));
+//		
+//		middleMainList.setOnScrollListener(new OnScrollListener() {
+//			
+//			@Override
+//			public void onScrollStateChanged(AbsListView absList, int state) {
+//				// TODO Auto-generated method stub
+//				  
+//			        if(absList.getLastVisiblePosition()==absList.getCount()-1&&isBkDark==false){
+//			        	isBkDark=true;
+//			        	ImageView iv=(ImageView)middlePart.findViewById(R.id.blur);
+//			        	System.out.println("Visible");
+//			        	iv.setVisibility(VISIBLE);
+//		
+//			        	
+//			        	
+//			        }else if(absList.getLastVisiblePosition()!=absList.getCount()-1&&isBkDark==true){
+//			        	isBkDark=false;
+//			        	ImageView iv=(ImageView)middlePart.findViewById(R.id.blur);
+//			        	System.out.println("GONE");
+//			        	iv.setVisibility(GONE);
+//			        }         
+//			        
+//			}
+//			
+//			@Override
+//			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
 		
 		refreshableView = (RefreshableView) findViewById(R.id.refreshView);  
 		refreshableView.setOnRefreshListener(new PullToRefreshListener() {  
             @Override  
-            public void onRefresh() {  
+            public void onRefresh() {   
                 try {  
                     Thread.sleep(3000);  
                 } catch (InterruptedException e) {  
@@ -85,13 +125,13 @@ public class MainUI extends RelativeLayout{
                 refreshableView.finishRefreshing();  
             }  
         }, 0);  
-		 
+		
+		
 	}
 	
 
 	
 	
-
 //------------------何明的监狱------------------------//
 	private List<cityInfo> mlistInfo = new ArrayList<cityInfo>();  //声明一个list，动态存储要显示的信息  
 	private DBManager db;
@@ -212,16 +252,16 @@ public class MainUI extends RelativeLayout{
 	private void initView(Context context){
 		this.context=context;
 		leftMenu=new FrameLayout(context);
-		middlePart=new FrameLayout(context);
-		
+		middlePart=new SlideFrameLayout(context);
+		imageProcess=new ImageProcess();
 		//leftMenu.setBackgroundColor(Color.RED);
 		//middlePart.setBackgroundColor(Color.GREEN);
-		addView(middlePart);
 		addView(leftMenu);
+		addView(middlePart);
 		setMiddlePart();
 		setLeftMenu();
 		
-		mScroller=new Scroller(context,new DecelerateInterpolator());
+		//mScroller=new Scroller(context,new DecelerateInterpolator());
 	}
 	
 	//测量屏幕，  此函数的参数是当前屏幕的宽度和高度
@@ -230,8 +270,10 @@ public class MainUI extends RelativeLayout{
 		// TODO Auto-generated method stub
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		middlePart.measure(widthMeasureSpec, heightMeasureSpec);
+		
 		int realWidth=MeasureSpec.getSize(widthMeasureSpec);
-		int tempWidthMeasure=MeasureSpec.makeMeasureSpec((int)(realWidth*0.85f), MeasureSpec.EXACTLY); 
+		int tempWidthMeasure=MeasureSpec.makeMeasureSpec((int)(realWidth*0.85f), MeasureSpec.EXACTLY);
+		middlePart.setMeasure((int)(realWidth*0.85f));
 		leftMenu.measure(tempWidthMeasure, heightMeasureSpec);
 	}
 	@Override
@@ -239,89 +281,32 @@ public class MainUI extends RelativeLayout{
 		// TODO Auto-generated method stub
 		super.onLayout(changed, l, t, r, b);
 		middlePart.layout(l, t, r, b);
-		leftMenu.layout(l-leftMenu.getMeasuredWidth(), t, r, b);
-		
+		leftMenu.layout(l, t, r, b);
+//		
+//		ImageView iv=(ImageView) middlePart.findViewById(R.id.blur);
+//		iv.setVisibility(GONE);
+//		iv.setDrawingCacheEnabled(true);
+//		imageProcess.blurBitmap(iv.getDrawingCache(),iv,50);
+//		iv.setDrawingCacheEnabled(false);
+//		
 	}
 	
-	private boolean isTestComplete=false;
-	
-	@Override
-	public boolean onInterceptTouchEvent(MotionEvent ev) {
-		// TODO Auto-generated method stub
-		getEventType(ev);
-		if(isTestComplete){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
-	
-	@Override
-	public boolean onTouchEvent(MotionEvent ev) {
-		// TODO Auto-generated method stub
-		if(!isTestComplete){
-			getEventType(ev);
-			return true;
-		}
-		else{
-			if(isrightleftEvent){
-				switch(ev.getActionMasked()){
-				
-				case MotionEvent.ACTION_MOVE:
-					int curScroll=getScrollX();
-				
-					int dis_x=(int)(ev.getX()-pt.x);
-					System.out.println("currScroll:"+curScroll);
-					System.out.println("dis_x:"+dis_x);
-					int expectX=-dis_x+curScroll;
-					int finalX=0;
-					if(expectX<0){
-						finalX=Math.max(expectX, -leftMenu.getMeasuredWidth());
-					}
-					else{
-						finalX=expectX;
-					}
-					scrollTo(finalX,0);
-					pt.x=(int) ev.getX();
-					break;
-				case MotionEvent.ACTION_UP:
-				case MotionEvent.ACTION_CANCEL:
-					int curScrollX=getScrollX();
-					if(Math.abs(curScrollX)>leftMenu.getMeasuredWidth()/2){
-						if(curScrollX<0){
-							mScroller.startScroll(curScrollX, 0, -leftMenu.getMeasuredWidth()-curScrollX, 0);
-						}
-					}
-					else{
-						mScroller.startScroll(curScrollX, 0, -curScrollX, 0);
-					}
-					invalidate();
-					isTestComplete=false;
-					isrightleftEvent=false;
-					break;
-				}
-			}else{
-				isTestComplete=false;
-				isrightleftEvent=false;
-			}
-		}
-		
-		
-		return super.onTouchEvent(ev);
-	}
-	@Override
-	public void computeScroll() {
-		// TODO Auto-generated method stub
-		super.computeScroll();
-		if(!mScroller.computeScrollOffset()){
-			return;
-		}
-		int tempX=mScroller.getCurrX();
-		scrollTo(tempX, 0);
-	}
+//	private boolean isTestComplete=false;
+//	
 //	@Override
-//	public boolean dispatchTouchEvent(MotionEvent ev) {
+//	public boolean onInterceptTouchEvent(MotionEvent ev) {
+//		// TODO Auto-generated method stub
+//		getEventType(ev);
+//		if(isTestComplete){
+//			return true;
+//		}
+//		else{
+//			return false;
+//		}
+//	}
+//	
+//	@Override
+//	public boolean onTouchEvent(MotionEvent ev) {
 //		// TODO Auto-generated method stub
 //		if(!isTestComplete){
 //			getEventType(ev);
@@ -333,6 +318,7 @@ public class MainUI extends RelativeLayout{
 //				
 //				case MotionEvent.ACTION_MOVE:
 //					int curScroll=getScrollX();
+//				
 //					int dis_x=(int)(ev.getX()-pt.x);
 //					System.out.println("currScroll:"+curScroll);
 //					System.out.println("dis_x:"+dis_x);
@@ -349,7 +335,16 @@ public class MainUI extends RelativeLayout{
 //					break;
 //				case MotionEvent.ACTION_UP:
 //				case MotionEvent.ACTION_CANCEL:
-//					
+//					int curScrollX=getScrollX();
+//					if(Math.abs(curScrollX)>leftMenu.getMeasuredWidth()/2){
+//						if(curScrollX<0){
+//							mScroller.startScroll(curScrollX, 0, -leftMenu.getMeasuredWidth()-curScrollX, 0);
+//						}
+//					}
+//					else{
+//						mScroller.startScroll(curScrollX, 0, -curScrollX, 0);
+//					}
+//					invalidate();
 //					isTestComplete=false;
 //					isrightleftEvent=false;
 //					break;
@@ -361,39 +356,92 @@ public class MainUI extends RelativeLayout{
 //		}
 //		
 //		
-//		return super.dispatchTouchEvent(ev);
+//		return super.onTouchEvent(ev);
 //	}
-	
-	private Point pt=new Point();
-	private static final int TEST_DIS=20;
-	private boolean isrightleftEvent;
-	
-	private void getEventType(MotionEvent ev){
-		switch(ev.getActionMasked()){
-		case MotionEvent.ACTION_DOWN:
-			pt.x=(int) ev.getX();
-			pt.y=(int) ev.getY();
-			break;
-		case MotionEvent.ACTION_MOVE:
-			int dX=Math.abs((int)ev.getX()-pt.x);
-			int dY=Math.abs((int)ev.getY()-pt.y);
-			if(dX>=TEST_DIS&&dX>=dY){
-				isrightleftEvent=true;
-				isTestComplete=true;
-				pt.x=(int) ev.getX();
-				pt.y=(int) ev.getY();
-			}else if(dY>=TEST_DIS&&dY>dX){
-				isrightleftEvent=false;
-				isTestComplete=false;
-				pt.x=(int) ev.getX();
-				pt.y=(int) ev.getY();
-			}
-			break;
-		case MotionEvent.ACTION_UP:
-			break;
-			
-		case MotionEvent.ACTION_CANCEL:
-			break;
-		}
-	}
+//	@Override
+//	public void computeScroll() {
+//		// TODO Auto-generated method stub
+//		super.computeScroll();
+//		if(!mScroller.computeScrollOffset()){
+//			return;
+//		}
+//		int tempX=mScroller.getCurrX();
+//		scrollTo(tempX, 0);
+//	}
+////	@Override
+////	public boolean dispatchTouchEvent(MotionEvent ev) {
+////		// TODO Auto-generated method stub
+////		if(!isTestComplete){
+////			getEventType(ev);
+////			return true;
+////		}
+////		else{
+////			if(isrightleftEvent){
+////				switch(ev.getActionMasked()){
+////				
+////				case MotionEvent.ACTION_MOVE:
+////					int curScroll=getScrollX();
+////					int dis_x=(int)(ev.getX()-pt.x);
+////					System.out.println("currScroll:"+curScroll);
+////					System.out.println("dis_x:"+dis_x);
+////					int expectX=-dis_x+curScroll;
+////					int finalX=0;
+////					if(expectX<0){
+////						finalX=Math.max(expectX, -leftMenu.getMeasuredWidth());
+////					}
+////					else{
+////						finalX=expectX;
+////					}
+////					scrollTo(finalX,0);
+////					pt.x=(int) ev.getX();
+////					break;
+////				case MotionEvent.ACTION_UP:
+////				case MotionEvent.ACTION_CANCEL:
+////					
+////					isTestComplete=false;
+////					isrightleftEvent=false;
+////					break;
+////				}
+////			}else{
+////				isTestComplete=false;
+////				isrightleftEvent=false;
+////			}
+////		}
+////		
+////		
+////		return super.dispatchTouchEvent(ev);
+////	}
+//	
+//	private Point pt=new Point();
+//	private static final int TEST_DIS=20;
+//	private boolean isrightleftEvent;
+//	
+//	private void getEventType(MotionEvent ev){
+//		switch(ev.getActionMasked()){
+//		case MotionEvent.ACTION_DOWN:
+//			pt.x=(int) ev.getX();
+//			pt.y=(int) ev.getY();
+//			break;
+//		case MotionEvent.ACTION_MOVE:
+//			int dX=Math.abs((int)ev.getX()-pt.x);
+//			int dY=Math.abs((int)ev.getY()-pt.y);
+//			if(dX>=TEST_DIS&&dX>=dY){
+//				isrightleftEvent=true;
+//				isTestComplete=true;
+//				pt.x=(int) ev.getX();
+//				pt.y=(int) ev.getY();
+//			}else if(dY>=TEST_DIS&&dY>dX){
+//				isrightleftEvent=false;
+//				isTestComplete=false;
+//				pt.x=(int) ev.getX();
+//				pt.y=(int) ev.getY();
+//			}
+//			break;
+//		case MotionEvent.ACTION_UP:
+//			break;
+//			
+//		case MotionEvent.ACTION_CANCEL:
+//			break;
+//		}
+//	}
 }

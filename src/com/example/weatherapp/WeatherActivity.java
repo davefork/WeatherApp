@@ -60,8 +60,8 @@ public class WeatherActivity extends Activity {
 
 	    DisplayMetrics metric = new DisplayMetrics();  
 	    getWindowManager().getDefaultDisplay().getMetrics(metric);  
-         width = metric.widthPixels;     // ÆÁÄ»¿í¶È£¨ÏñËØ£©  
-         height = metric.heightPixels;   // ÆÁÄ»¸ß¶È£¨ÏñËØ£©  
+	     width = metric.widthPixels;     // ÆÁÄ»¿í¶È£¨ÏñËØ£©  
+	     height = metric.heightPixels;   // ÆÁÄ»¸ß¶È£¨ÏñËØ£©  
         
         mainLayout=new MainUI(this);
         
