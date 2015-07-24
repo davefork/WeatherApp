@@ -149,7 +149,16 @@ public class SlideFrameLayout extends FrameLayout {
 		int tempX=mScroller.getCurrX();
 		scrollTo(tempX, 0);
 	}
-
+	public void changeLeftMenuState(){
+		if(isMenuVisiable==true){
+			mScroller.startScroll(-leftMenuWidth, 0, leftMenuWidth, 0);
+			isMenuVisiable=false;
+		}else{
+			mScroller.startScroll(0, 0, -leftMenuWidth, 0);
+			isMenuVisiable=true;
+		}
+		container.invalidate();
+	}
 	private Point pt=new Point();
 	private static final int TEST_DIS=20;
 	private boolean isrightleftEvent;

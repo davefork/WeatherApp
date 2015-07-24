@@ -3,14 +3,18 @@ package com.example.adapter;
 import com.example.controler.WeatherDataManager;
 import com.example.myview.LineGridView;
 import com.example.weatherapp.R;
+import com.example.weatherapp.ViewPagerActivity;
 import com.example.weatherapp.WeatherActivity;
 import com.example.weatherapp.seven;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.AbsListView.LayoutParams;
@@ -126,6 +130,20 @@ public class WeatherMainListview extends BaseAdapter{
 				lineChartHolder.lineChart=(seven)convertView.findViewById(R.id.lineChart);
 				//lineChartHolder.lineChartTitle=(TextView)convertView.findViewById(R.id.lineChartTitle);
 				lineChartHolder.gallery.setAdapter(new LineChartAdapter(mInflater.getContext(),weatherManager));
+				lineChartHolder.gallery.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> gallery, View arg1,
+							int index, long arg3) {
+						// TODO Auto-generated method stub
+						LineChartAdapter adapter=(LineChartAdapter) gallery.getAdapter();
+						Intent intent = new Intent();  
+					    intent.setClass(mInflater.getContext(), ViewPagerActivity.class);
+					    intent.putExtra("cityName",adapter.getWeatherDataManager().getCity());
+					    mInflater.getContext().startActivity(intent); 
+					}
+					
+				});
 				convertView.setTag(lineChartHolder);
 				
 	        }else {

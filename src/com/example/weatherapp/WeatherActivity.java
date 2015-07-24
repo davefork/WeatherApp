@@ -93,16 +93,23 @@ public class WeatherActivity extends Activity {
     	List<cityInfo> mlistInfo= new ArrayList<cityInfo>();
     	DBManager db=new DBManager(WeatherActivity.this);
     	db.createCollectionDB(this.getApplicationContext());
+    	String cityName = mainLayout.getInfo().getTitle();
+    	String a[] = cityName.split(".");
+    	String tureCityName = a[1];
+    	int cityId = 0;
     	///////////////////////////////////////////////////
 		switch(aItem.getItemId()){
 		case 0:
-			Toast.makeText(WeatherActivity.this, "查看这里的天气",Toast.LENGTH_SHORT).show();
+			
+			cityId = db.getCityCode(tureCityName);
+			db.setLastWeather(cityName, "阳光明媚");
+			//读取天气信息
+			Toast.makeText(WeatherActivity.this, db.getLastWeather(cityName),Toast.LENGTH_SHORT).show();
 			return true;  
 		case 1:
 			db.deleteCity(mainLayout.getInfo().getTitle());		
 			Iterator it = db.getCollection().iterator();
-			int i = 0;
-			String cityName="";
+			int i = 0;			
 			mlistInfo.clear();   
 			while(it.hasNext()){
 				cityName = it.next().toString();

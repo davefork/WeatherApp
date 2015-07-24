@@ -5,26 +5,13 @@ import java.util.ArrayList;
 
 import com.example.controler.WeatherDataManager;
 import com.example.weatherapp.R;
-import com.example.weatherapp.R.id;
-import com.example.weatherapp.R.layout;
-
-
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 
 public class LineChartAdapter extends BaseAdapter{
@@ -55,6 +42,9 @@ public class LineChartAdapter extends BaseAdapter{
 	public long getItemId(int arg0) {
 		// TODO 自动生成的方法存根
 		return 0;
+	}
+	public WeatherDataManager getWeatherDataManager(){
+		return wData;
 	}
 
 	@Override

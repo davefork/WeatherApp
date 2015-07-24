@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="211dp"
+        android:background="#AAF0FFF0"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/degree"
+            android:layout_width="151dp"
+            android:layout_height="204dp"
+            android:layout_weight="0.29"
+            android:gravity="center"
+            android:text=" "
+            android:textColor="#515151"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1.30"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/img_day"
+                android:layout_width="69dp"
+                android:layout_height="64dp"
+                android:src="@drawable/pic_id" />
+
+            <TextView
+                android:id="@+id/imgtitle_d"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Large Text"
+                android:textColor="#515151"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <ImageView
+                android:id="@+id/img_night"
+                android:layout_width="61dp"
+                android:layout_height="81dp"
+                android:src="@drawable/pic_id" />
+
+            <TextView
+                android:id="@+id/imgtitle_n"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Large Text"
+                android:textColor="#515151"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

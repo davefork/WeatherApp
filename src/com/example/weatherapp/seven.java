@@ -81,7 +81,6 @@ public class seven extends View{
 			//Ð´ÎÂ¶È
 			canvas.drawText(wData.getMaxDegreeInDay(i+1),x,maxY-15+translate,p);
 			canvas.drawText(wData.getMinDegreeInDay(i+1),x,minY+20+translate,p);
-			//»­Ïß
 			if(i>0)
 			{
 				canvas.drawLine(x-50,oldMaxY+translate,x,maxY+translate,p);

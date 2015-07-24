@@ -12,6 +12,8 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.widget.Toast;
+
 public class WeatherDataManager {
 	private Map<String,String> weatherInfo;
 	private static Map<String,WeatherDataManager> managerInfo=null;
@@ -49,9 +51,19 @@ public class WeatherDataManager {
 		weatherInfo=new HashMap<String,String>();
 		
 		this.dbManager=dbManager;
-		dbManager.openWeatherDB();	
-		uri="http://m.weather.com.cn/atad/"+dbManager.getCityCode(cityName)+".html";
-		HttpGetData();
+		
+		dbManager.createCollectionDB(dbManager.getContext());
+		String data=dbManager.getLastWeather(cityName);
+		if(data==null){
+			dbManager.openWeatherDB();	
+			uri="http://m.weather.com.cn/atad/"+dbManager.getCityCode(cityName)+".html";
+			HttpGetData();
+		}
+		else{
+			parseJSON(data);
+			System.out.println(data);
+			HttpGetData();
+		}
 	}
 	
 	
@@ -189,6 +201,7 @@ public class WeatherDataManager {
 	private Runnable getRunnable = new Runnable(){
 	    @Override
 	    public void run() {
+	    	String rev="";
 	    	try {  
 		        HttpClient httpclient = new DefaultHttpClient();  
 		     
@@ -203,12 +216,20 @@ public class WeatherDataManager {
 		        int code = response.getStatusLine().getStatusCode(); 
 		        //检验状态码，如果成功接收数据   
 		        if (code == 200) { 
-		            String rev = EntityUtils.toString(response.getEntity());    
-		            parseJSON(rev);
+		            rev = EntityUtils.toString(response.getEntity());    
+		            
 		        }  
 		    } catch (Exception e) {    
 		    	e.printStackTrace();
-		    }  
+		    }
+	    	if(rev!=""){
+	    		parseJSON(rev);
+	    		dbManager.createCollectionDB(dbManager.getContext());
+	    		dbManager.setLastWeather(getCity(), rev);
+	    	}
+	    	else{
+	    		
+	    	}
 	    }
 	};
 	

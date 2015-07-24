@@ -44,10 +44,12 @@ public class MainUI extends RelativeLayout{
 	ListView middleMainList;
 	private boolean isBkDark=false;
 	private ImageProcess imageProcess;
+	View layoutTitle;
 	private ImageView pagesView[];
 	View weatherViews[];
-	//---------------初始化界面的变量！！！------------------//
 	private RefreshableView[] refreshableViews;
+	//---------------初始化界面的变量！！！------------------//
+
 	//---------------初始化界面的变量！！！------------------//
 	
 	public MainUI(Context context, AttributeSet attrs) {
@@ -70,8 +72,8 @@ public class MainUI extends RelativeLayout{
 			pagesView[i].setImageResource(R.drawable.grey_point);
 		}
 		pagesView[curPage].setImageResource(R.drawable.white_point);
-		this.invalidate();
-		this.postInvalidate();
+		TextView cityNameTitle=(TextView) layoutTitle.findViewById(R.id.cityName);
+		cityNameTitle.setText(colset.get(curPage));
 	}
 
 	public void setFlipperAndPageView(){
@@ -112,21 +114,28 @@ public class MainUI extends RelativeLayout{
 		weatherViews=tmpWeatherViews;
 		pagesView=tmpPagesView;
 		refreshableViews=tmpRefreshableViews;
-		flipper.invalidate();
+		
 	}
 
 	private void setMiddlePart(){
-		View layoutTitle=LayoutInflater.from(context).inflate(R.layout.activity_weather_title,null);
+		layoutTitle=LayoutInflater.from(context).inflate(R.layout.activity_weather_title,null);
 		View layoutMiddle=LayoutInflater.from(context).inflate(R.layout.flipper_layout, null);
 		View layoutBg=LayoutInflater.from(context).inflate(R.layout.background, null);
-
-		TextView cityNameTitle;
 		
 		
 		//之后需要改掉的地方！！！！！！！！！！！！！！！
 		LayoutParams titleParams=new LayoutParams(MarginLayoutParams.MATCH_PARENT, (int)(WeatherActivity.height*0.2));	
 		layoutTitle.setLayoutParams(titleParams);
+		ImageView leftMenuBtn=(ImageView) layoutTitle.findViewById(R.id.left_menu);
 		
+		leftMenuBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				middlePart.changeLeftMenuState();
+			}
+		});
 		
 		middlePart.addView(layoutBg);
 		
@@ -145,8 +154,7 @@ public class MainUI extends RelativeLayout{
 		pagesView=new ImageView[colset.size()];
 		refreshableViews=new RefreshableView[colset.size()];
 		
-		cityNameTitle=(TextView) layoutTitle.findViewById(R.id.cityName);
-		cityNameTitle.setText(colset.get(0));
+		
 		LayoutParams pagesParams=new LayoutParams(17, 17);
 		
 		for(int i = 0; i < colset.size(); i++)  
@@ -169,7 +177,10 @@ public class MainUI extends RelativeLayout{
 					refreshableViews[index].finishRefreshing();
 				}
 			}, i);
-        }  
+			//dbManager.createCollectionDB(context);
+			//System.out.println(dbManager.getLastWeather(colset.get(i)));
+        }
+		
 		setPagesImg();
 //		for(int i=0;i<weatherViews.length;i++){
 //			

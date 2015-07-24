@@ -8,14 +8,16 @@
 	<com.example.myview.TTBar
         android:id="@+id/title_bar"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"    
+        android:layout_height="40dp"    
         android:background="@drawable/head"      
 		 />
 	       
     <ListView
         android:id="@+id/list_collection"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content" 
+        android:cacheColorHint = "#00000000"
+        android:fadingEdge="none" >
 
     </ListView>
 

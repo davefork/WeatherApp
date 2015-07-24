@@ -39,6 +39,10 @@ public class DBManager {
 		return dbManager;
 	}
 	
+	public Context getContext(){
+		return context;
+	}
+	
 	//ÄÚ²¿dbhelperÀà
 	private class DbHelper extends SQLiteOpenHelper
 	{
@@ -141,9 +145,13 @@ public class DBManager {
 		String weather = "";
 		SQLiteDatabase db_collection;
 		db_collection = getDbHelper().getReadableDatabase();
-		db_collection.execSQL("");
+		Cursor cr=db_collection.rawQuery("select weather from collection where name='"+city+"'", null);
+		while(cr.moveToNext()){
+			weather = cr.getString(cr.getColumnIndexOrThrow("weather"));
+		}
 		dbhelper.close();
 		db_collection.close();
+	
 		return weather;
 	}
 	public DBManager(Context context)
