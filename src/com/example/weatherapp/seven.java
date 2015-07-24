@@ -19,14 +19,17 @@ public class seven extends View{
 	public seven(Context context) {
 		super(context);
 		// TODO 自动生成的构造函数存根
-		wData=WeatherDataManager.getWeatherDataManager();
+		//wData=WeatherDataManager.getWeatherDataManager();
 		
 	}
 
 	public seven(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO 自动生成的构造函数存根
-		wData=WeatherDataManager.getWeatherDataManager();
+		//wData=WeatherDataManager.getWeatherDataManager();
+	}
+	public void setWeatherDataManager(WeatherDataManager wData){
+		this.wData=wData;
 	}
 	int translate=20;
 	@Override
@@ -121,5 +124,4 @@ public class seven extends View{
 			}
 		}
 	}
-
 }

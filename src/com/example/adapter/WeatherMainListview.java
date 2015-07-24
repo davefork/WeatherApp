@@ -96,7 +96,7 @@ public class WeatherMainListview extends BaseAdapter{
 				//vg.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,  (int)(WeatherActivity.height*0.8)));
 				//***********注意类型一定要写对！！！！LayoutParams的！！！！！*******************//
 				convertView =mInflater.inflate(R.layout.activity_weather_main,null);
-				LayoutParams titleParams=new LayoutParams(MarginLayoutParams.MATCH_PARENT, (int)(WeatherActivity.height*0.9));
+				LayoutParams titleParams=new LayoutParams(MarginLayoutParams.MATCH_PARENT, (int)(WeatherActivity.height*1.05));
 				
 				convertView.setLayoutParams(titleParams);
 				//FrameLayout layout=(FrameLayout) convertView.findViewById(R.id.weather_info_layout);
@@ -132,7 +132,7 @@ public class WeatherMainListview extends BaseAdapter{
 	        	lineChartHolder=(LineChartHolder) convertView.getTag();
 	        
 	        }
-
+			lineChartHolder.lineChart.setWeatherDataManager(weatherManager);
 			break;
 		case 2:
 			if (convertView == null) {

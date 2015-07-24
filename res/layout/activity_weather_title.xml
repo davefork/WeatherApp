@@ -8,6 +8,7 @@
     	android:layout_height="wrap_content"
     	>
         <ImageView 
+            android:id="@+id/left_menu"
             android:layout_width="@dimen/mainlayout_title_img_size"
     		android:layout_height="@dimen/mainlayout_title_img_size"
     		android:layout_alignParentLeft="true"
@@ -19,6 +20,9 @@
             android:layout_width="wrap_content"
     		android:layout_height="wrap_content"
     		android:layout_centerInParent="true"
+    		android:layout_alignBaseline="@id/left_menu"
+    		android:textColor="@color/white"
+    		android:textSize="25px"
     		android:text="北京"/>
         <ImageView 
             android:layout_width="@dimen/mainlayout_title_img_size"
@@ -27,6 +31,17 @@
     		android:layout_margin="13dp"
     		android:clickable="true"
     		android:src="@drawable/share_selector"/>
+        <LinearLayout
+            android:id="@+id/page_layout"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/cityName"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            >
+            
+        </LinearLayout>
     </RelativeLayout>
 
    

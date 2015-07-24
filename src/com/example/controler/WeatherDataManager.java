@@ -14,7 +14,10 @@ import org.json.JSONObject;
 
 public class WeatherDataManager {
 	private Map<String,String> weatherInfo;
+	private static Map<String,WeatherDataManager> managerInfo=null;
 	private static WeatherDataManager wm=null;
+	private DBManager dbManager;
+	private String uri;
 	//天气类相关常量
 	public static final int DAY=0;
 	public static final int NIGHT=1;
@@ -32,81 +35,141 @@ public class WeatherDataManager {
 	public static final int NUM_OF_EXPONENT=8;
 	//天气类相关常量
 	
-	public static WeatherDataManager getWeatherDataManager(){
-		if(wm==null){
-			wm=new WeatherDataManager();
-			wm.HttpGetData();
+	public static WeatherDataManager getWeatherDataManager(String cityName,DBManager dbManager){
+		if(managerInfo==null){
+			managerInfo=new HashMap<String,WeatherDataManager>();
 		}
-		return wm;
+		if(managerInfo.get(cityName)==null){
+			managerInfo.put(cityName, new WeatherDataManager(cityName,dbManager));
+		}
+		
+		return managerInfo.get(cityName);
 	}
-	
+	public WeatherDataManager(String cityName,DBManager dbManager){
+		weatherInfo=new HashMap<String,String>();
+		
+		this.dbManager=dbManager;
+		dbManager.openWeatherDB();	
+		uri="http://m.weather.com.cn/atad/"+dbManager.getCityCode(cityName)+".html";
+		HttpGetData();
+	}
 	
 	
 	//获取数据方法集//
 	public String getCity(){								//获取城市名字
-		return weatherInfo.get("city");
+		String tmp=weatherInfo.get("city");
+		if(tmp==null){
+			return "";
+		}
+		return tmp;
 	}
 	
 	public String getDegreeString(int day){					//获取完整最高温、最低温字符串
-		return weatherInfo.get("temp"+day);
+		String tmp=weatherInfo.get("temp"+day);
+		if(tmp==null){
+			return "";
+		}
+		return tmp;
 	}
 	
 	public String getWeek(){
-		return weatherInfo.get("week");
+		String tmp= weatherInfo.get("week");
+		if(tmp==null){
+			return "";
+		}
+		return tmp;
 	}
 	
 	public String getMaxDegreeInDay(int day){				//获取最高温字符串
 		String []tmp=weatherInfo.get("temp"+day).split("~");
+		if(tmp[0]==null){
+			return "1";
+		}
 		return tmp[0];
 	}
 	public String getMinDegreeInDay(int day){				//获取最低温字符串
 		String []tmp=weatherInfo.get("temp"+day).split("~");
+		if(tmp[1]==null){
+			return "1";
+		}
 		return tmp[1];
 	}
 	public String GetWeatherString(int day){				//天气汉字描述
-		return weatherInfo.get("weather"+day);
+		String tmp= weatherInfo.get("weather"+day);
+		if(tmp==null){
+			return "";
+		}
+		return tmp;
 	}
 	
 	public String getImageId(int day,int dayOrNight){	   //获取图片的名字
 		if(dayOrNight==DAY){
-			return weatherInfo.get("img"+day);
+			String tmp= weatherInfo.get("img"+day);
+			if(tmp==null){
+				return "1";
+			}
+			return tmp;
 		}
-		return weatherInfo.get("img"+(day+6));
+		String tmp= weatherInfo.get("img"+(day+6));
+		if(tmp==null){
+			return "1";
+		}
+		return tmp;
 	}
 	
 	public String getImageTitle(int day,int dayOrNight){	//获取每个图片对应的解释信息
 		if(dayOrNight==DAY){
-			return weatherInfo.get("img_title"+day);
+			String tmp= weatherInfo.get("img_title"+day);
+			if(tmp==null){
+				return "";
+			}
+			return tmp;
 		}
-		return weatherInfo.get("img_title"+(day+6));
+		String tmp= weatherInfo.get("img_title"+(day+6));
+		if(tmp==null){
+			return "";
+		}
+		return tmp;
 	}
 	public String getWindDescription(int day){				//获取风的描述
-		return weatherInfo.get("wind"+day);
+		String tmp= weatherInfo.get("wind"+day);
+		if(tmp==null){
+			return "";
+		}
+		return tmp;
 	}
 	public String getWindLevelDescription(int day){			//获取风速等级
-		return weatherInfo.get("fl"+day);
+		String tmp= weatherInfo.get("fl"+day);
+		if(tmp==null){
+			return "";
+		}
+		return tmp;
 	}
 	
 	public String getExponent(int exponentId){				//得到各种指数
+		String tmp="";
 		switch(exponentId){
 		case CLOTH_EXPONENT:
-			return weatherInfo.get("index");
+			tmp= weatherInfo.get("index");
 		case ULTRAVIOLET_EXPONENT:
-			return weatherInfo.get("index_uv");
+			tmp= weatherInfo.get("index_uv");
 		case WASH_CAR_EXPONENT:
-			return weatherInfo.get("index_xc");
+			tmp= weatherInfo.get("index_xc");
 		case TRAVEL_EXPONENT:
-			return weatherInfo.get("index_tr");
+			tmp= weatherInfo.get("index_tr");
 		case COMFORTABLE_EXPONENT:
-			return weatherInfo.get("index_co");
+			tmp= weatherInfo.get("index_co");
 		case PRACTICE_EXPONENT:
-			return weatherInfo.get("index_cl");
+			tmp= weatherInfo.get("index_cl");
 		case DRY_EXPONENT:
-			return weatherInfo.get("index_ls");
+			tmp= weatherInfo.get("index_ls");
 		case ALLERGIC_EXPONENT:
-			return weatherInfo.get("index_ag");
+			tmp= weatherInfo.get("index_ag");
 		}
-		return null;
+		if(tmp==null){
+			return "";
+		}
+		return tmp;
 	}
 	
 	public int getNumOfExponent(){
@@ -116,6 +179,7 @@ public class WeatherDataManager {
 	//获取数据方法集//
 	public WeatherDataManager(){
 		weatherInfo=new HashMap<String,String>();
+		managerInfo=new HashMap<String,WeatherDataManager>();
 	}
 	
 	public void HttpGetData(){
@@ -127,7 +191,7 @@ public class WeatherDataManager {
 	    public void run() {
 	    	try {  
 		        HttpClient httpclient = new DefaultHttpClient();  
-		        String uri = "http://m.weather.com.cn/atad/101190101.html";   
+		     
 		        HttpGet get = new HttpGet(uri);  
 
 		        //添加http头信息    

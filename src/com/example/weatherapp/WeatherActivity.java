@@ -51,8 +51,15 @@ public class WeatherActivity extends Activity {
 			information.setAvatar(R.drawable.ic_launcher);  
 			mlistInfo.add(information); //将新的info对象加入到信息列表中  
 			i++;  
-		}  
+		}
+		mainLayout.setFlipperAndPageView();
 		mainLayout.RefreshAllList(mlistInfo);
+	}
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		mainLayout.invalidate();
 	}
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +116,7 @@ public class WeatherActivity extends Activity {
 			}  
 			mainLayout.RefreshAllList(mlistInfo);
 			Toast.makeText(WeatherActivity.this, "你删除了这个地方",Toast.LENGTH_SHORT).show();
+			mainLayout.setFlipperAndPageView();
 			return true; 
 		}
 		return false;			

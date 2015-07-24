@@ -4,6 +4,24 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ViewFlipper;
+
 import com.example.ImageProcess.ImageProcess;
 import com.example.adapter.ListViewAdapter;
 import com.example.adapter.WeatherMainListview;
@@ -14,40 +32,22 @@ import com.example.myview.RefreshableView.PullToRefreshListener;
 import com.example.weatherapp.R;
 import com.example.weatherapp.WeatherActivity;
 
-import android.content.Context;
-import android.graphics.Point;
-import android.support.v4.view.ViewPager;
-import android.util.AttributeSet;
-import android.view.ContextMenu;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Scroller;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ViewFlipper;
-
 public class MainUI extends RelativeLayout{
 	private Context context;
 	private FrameLayout leftMenu;
 	private SlideFrameLayout middlePart;
+	private ViewFlipper flipper;
+	private LinearLayout pagesLayout;
+	private DBManager dbManager;
+	private List<String> colset;
 	//private Scroller mScroller;
 	ListView middleMainList;
 	private boolean isBkDark=false;
 	private ImageProcess imageProcess;
+	private ImageView pagesView[];
+	View weatherViews[];
 	//---------------初始化界面的变量！！！------------------//
-	private RefreshableView refreshableView;
+	private RefreshableView[] refreshableViews;
 	//---------------初始化界面的变量！！！------------------//
 	
 	public MainUI(Context context, AttributeSet attrs) {
@@ -64,10 +64,64 @@ public class MainUI extends RelativeLayout{
 	}
 
 	//---------------初始化界面的各个部分！！！------------------//
+	public void setPagesImg(){
+		int curPage=middlePart.getCurPage();
+		for(int i=0;i<pagesView.length;i++){
+			pagesView[i].setImageResource(R.drawable.grey_point);
+		}
+		pagesView[curPage].setImageResource(R.drawable.white_point);
+		this.invalidate();
+		this.postInvalidate();
+	}
+
+	public void setFlipperAndPageView(){
+		dbManager.createCollectionDB(context);
+		colset=dbManager.getCollection();
+		middlePart.setData(flipper,colset.size(),this);
+		
+		View[] tmpWeatherViews=new View[colset.size()];
+		ImageView[] tmpPagesView=new ImageView[colset.size()];
+		RefreshableView []tmpRefreshableViews=new RefreshableView[colset.size()];
+		
+		LayoutParams pagesParams=new LayoutParams(17, 17);
+		flipper.removeAllViews();
+		pagesLayout.removeAllViews();
+		for(int i = 0; i < colset.size(); i++)  
+        {  
+			String tmp=colset.get(i);  
+			tmpWeatherViews[i]=LayoutInflater.from(context).inflate(R.layout.activity_weather,null);
+			flipper.addView(tmpWeatherViews[i]);
+			middleMainList=(ListView) tmpWeatherViews[i].findViewById(R.id.mainList);
+			tmpRefreshableViews[i]=(RefreshableView) tmpWeatherViews[i].findViewById(R.id.refreshView);
+			middleMainList.setAdapter(new WeatherMainListview(context,WeatherDataManager.getWeatherDataManager(tmp, dbManager)));
+			tmpPagesView[i]=new ImageView(context);
+			tmpPagesView[i].setLayoutParams(pagesParams);
+			tmpPagesView[i].setPadding(5, 0, 5, 0);
+			pagesLayout.addView(tmpPagesView[i]);
+			tmpRefreshableViews[i].setOnRefreshListener(new RrefreshListener(i) {
+				@Override
+				public void onRefresh() {
+					// TODO Auto-generated method stub
+					System.out.println("index:"+index);
+					refreshableViews[index].finishRefreshing();
+				}
+			}, i);
+        }
+		setPagesImg();
+	
+		weatherViews=tmpWeatherViews;
+		pagesView=tmpPagesView;
+		refreshableViews=tmpRefreshableViews;
+		flipper.invalidate();
+	}
+
 	private void setMiddlePart(){
 		View layoutTitle=LayoutInflater.from(context).inflate(R.layout.activity_weather_title,null);
-		View layoutMiddle=LayoutInflater.from(context).inflate(R.layout.activity_weather, null);
+		View layoutMiddle=LayoutInflater.from(context).inflate(R.layout.flipper_layout, null);
 		View layoutBg=LayoutInflater.from(context).inflate(R.layout.background, null);
+
+		TextView cityNameTitle;
+		
 		
 		//之后需要改掉的地方！！！！！！！！！！！！！！！
 		LayoutParams titleParams=new LayoutParams(MarginLayoutParams.MATCH_PARENT, (int)(WeatherActivity.height*0.2));	
@@ -75,58 +129,106 @@ public class MainUI extends RelativeLayout{
 		
 		
 		middlePart.addView(layoutBg);
-		middlePart.addView(layoutTitle);
+		
 		middlePart.addView(layoutMiddle);
+		middlePart.addView(layoutTitle);
 		
-		middleMainList=(ListView) layoutMiddle.findViewById(R.id.mainList);
+		dbManager.createCollectionDB(context);
+		colset=dbManager.getCollection();
 		
-
-		middleMainList.setAdapter(new WeatherMainListview(context,WeatherDataManager.getWeatherDataManager()));
-//		
-//		middleMainList.setOnScrollListener(new OnScrollListener() {
+		
+		flipper=(ViewFlipper) layoutMiddle.findViewById(R.id.flipper);
+		pagesLayout=(LinearLayout)layoutTitle.findViewById(R.id.page_layout);
+		middlePart.setData(flipper,colset.size(),this);
+		
+		weatherViews=new View[colset.size()];
+		pagesView=new ImageView[colset.size()];
+		refreshableViews=new RefreshableView[colset.size()];
+		
+		cityNameTitle=(TextView) layoutTitle.findViewById(R.id.cityName);
+		cityNameTitle.setText(colset.get(0));
+		LayoutParams pagesParams=new LayoutParams(17, 17);
+		
+		for(int i = 0; i < colset.size(); i++)  
+        {  
+			String tmp=colset.get(i);  
+			weatherViews[i]=LayoutInflater.from(context).inflate(R.layout.activity_weather,null);
+			flipper.addView(weatherViews[i]);
+			middleMainList=(ListView) weatherViews[i].findViewById(R.id.mainList);	
+			middleMainList.setAdapter(new WeatherMainListview(context,WeatherDataManager.getWeatherDataManager(tmp, dbManager)));
+			pagesView[i]=new ImageView(context);
+			pagesView[i].setLayoutParams(pagesParams);
+			pagesView[i].setPadding(5, 0, 5, 0);
+			pagesLayout.addView(pagesView[i]);
+			refreshableViews[i]=(RefreshableView) weatherViews[i].findViewById(R.id.refreshView);
+			refreshableViews[i].setOnRefreshListener(new RrefreshListener(i) {
+				@Override
+				public void onRefresh() {
+					// TODO Auto-generated method stub
+					System.out.println("index:"+index);
+					refreshableViews[index].finishRefreshing();
+				}
+			}, i);
+        }  
+		setPagesImg();
+//		for(int i=0;i<weatherViews.length;i++){
 //			
-//			@Override
-//			public void onScrollStateChanged(AbsListView absList, int state) {
-//				// TODO Auto-generated method stub
-//				  
-//			        if(absList.getLastVisiblePosition()==absList.getCount()-1&&isBkDark==false){
-//			        	isBkDark=true;
-//			        	ImageView iv=(ImageView)middlePart.findViewById(R.id.blur);
-//			        	System.out.println("Visible");
-//			        	iv.setVisibility(VISIBLE);
-//		
-//			        	
-//			        	
-//			        }else if(absList.getLastVisiblePosition()!=absList.getCount()-1&&isBkDark==true){
-//			        	isBkDark=false;
-//			        	ImageView iv=(ImageView)middlePart.findViewById(R.id.blur);
-//			        	System.out.println("GONE");
-//			        	iv.setVisibility(GONE);
-//			        }         
-//			        
-//			}
 //			
-//			@Override
-//			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//		});
-		
-		refreshableView = (RefreshableView) findViewById(R.id.refreshView);  
-		refreshableView.setOnRefreshListener(new PullToRefreshListener() {  
-            @Override  
-            public void onRefresh() {   
-                try {  
-                    Thread.sleep(3000);  
-                } catch (InterruptedException e) {  
-                    e.printStackTrace();  
-                }  
-                refreshableView.finishRefreshing();  
-            }  
-        }, 0);  
-		
-		
+//			System.out.println(weatherViews.length);
+//	//		middleMainList.setOnScrollListener(new OnScrollListener() {
+//	//			
+//	//			@Override
+//	//			public void onScrollStateChanged(AbsListView absList, int state) {
+//	//				// TODO Auto-generated method stub
+//	//				  
+//	//			        if(absList.getLastVisiblePosition()==absList.getCount()-1&&isBkDark==false){
+//	//			        	isBkDark=true;
+//	//			        	ImageView iv=(ImageView)middlePart.findViewById(R.id.blur);
+//	//			        	System.out.println("Visible");
+//	//			        	iv.setVisibility(VISIBLE);
+//	//		
+//	//			        	
+//	//			        	
+//	//			        }else if(absList.getLastVisiblePosition()!=absList.getCount()-1&&isBkDark==true){
+//	//			        	isBkDark=false;
+//	//			        	ImageView iv=(ImageView)middlePart.findViewById(R.id.blur);
+//	//			        	System.out.println("GONE");
+//	//			        	iv.setVisibility(GONE);
+//	//			        }         
+//	//			        
+//	//			}
+//	//			
+//	//			@Override
+//	//			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
+//	//				// TODO Auto-generated method stub
+//	//				
+//	//			}
+//	//		});
+//			
+//			
+//		}
+//		refreshableView = (RefreshableView)weatherViews[0].findViewById(R.id.refreshView);  
+//		refreshableView.setOnRefreshListener(new PullToRefreshListener() {  
+//            @Override  
+//            public void onRefresh() {   
+//             
+//                	System.out.println("111");
+//                
+//     
+//                refreshableView.finishRefreshing();  
+//            }  
+//        }, 0);  
+//		refreshableView = (RefreshableView)weatherViews[1].findViewById(R.id.refreshView);  
+//		refreshableView.setOnRefreshListener(new PullToRefreshListener() {  
+//            @Override  
+//            public void onRefresh() {   
+//             
+//                	System.out.println("222");
+//                
+//     
+//                refreshableView.finishRefreshing();  
+//            }  
+//        }, 0);  
 	}
 	
 
@@ -251,6 +353,7 @@ public class MainUI extends RelativeLayout{
 	//为了创建左右菜单，所以需要context上下文
 	private void initView(Context context){
 		this.context=context;
+		dbManager=DBManager.getDBManager(context);
 		leftMenu=new FrameLayout(context);
 		middlePart=new SlideFrameLayout(context);
 		imageProcess=new ImageProcess();
@@ -444,4 +547,18 @@ public class MainUI extends RelativeLayout{
 //			break;
 //		}
 //	}
+	
+}
+
+class RrefreshListener implements PullToRefreshListener{
+	int index;
+	public RrefreshListener(int id){
+		index=id;
+	}
+	@Override
+	public void onRefresh() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

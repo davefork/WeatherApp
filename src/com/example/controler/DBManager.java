@@ -1,5 +1,6 @@
 package com.example.controler;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -34,6 +35,7 @@ public class DBManager {
 		if(dbManager==null){
 			dbManager=new DBManager(context);
 		}
+		
 		return dbManager;
 	}
 	
@@ -68,7 +70,7 @@ public class DBManager {
 	{	
 		DbHelper dbHelper = new DbHelper(context,"collectcity");
 		System.out.println("create database");
-		dbHelper.getReadableDatabase();
+
 		dbhelper = dbHelper;
 		
 		return 0;
@@ -160,9 +162,11 @@ public class DBManager {
 		Cursor cr=db_weather.rawQuery("select * from citys where name='"+cityName+"'", null);
 		while(cr.moveToNext()){
 			if(cr.getInt(3)>10000000){
+				close();
 				return cr.getInt(3);
 			}
 		}
+		close();
 		return -1;
 		
 	}
