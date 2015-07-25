@@ -47,7 +47,6 @@ public class ViewPagerActivity extends Activity {
     getDate();
     init();
     initTabLineWidth();
-
   }
   private void getDate(){
 	  

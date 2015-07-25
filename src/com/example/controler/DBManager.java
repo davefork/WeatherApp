@@ -149,6 +149,7 @@ public class DBManager {
 		while(cr.moveToNext()){
 			weather = cr.getString(cr.getColumnIndexOrThrow("weather"));
 		}
+		cr.close();
 		dbhelper.close();
 		db_collection.close();
 	
@@ -168,14 +169,14 @@ public class DBManager {
 	//获取城市的Code
 	public int getCityCode(String cityName){
 		Cursor cr=db_weather.rawQuery("select * from citys where name='"+cityName+"'", null);
+		int cityCode =0;
 		while(cr.moveToNext()){
-			if(cr.getInt(3)>10000000){
-				close();
-				return cr.getInt(3);
+			cityCode = cr.getInt(3);
 			}
-		}
+		cr.close();
+		db_weather.close();
 		close();
-		return -1;
+		return cityCode;
 		
 	}
 	

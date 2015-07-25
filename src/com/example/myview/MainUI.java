@@ -43,7 +43,6 @@ public class MainUI extends RelativeLayout{
 	private List<String> colset;
 	//private Scroller mScroller;
 	ListView middleMainList;
-	private boolean isBkDark=false;
 	private ImageProcess imageProcess;
 	View layoutTitle;
 	private ImageView pagesView[];
@@ -286,16 +285,20 @@ public class MainUI extends RelativeLayout{
 		
 		Iterator it = db.getCollection().iterator();
 		int i = 0;
-		String cityName="";
+		String cityName = "";
+		String tureCityName="";		    	
 		mlistInfo.clear();   
 		while(it.hasNext()){
-			cityName = it.next().toString();
+			cityName = it.next().toString();			
+	    	String a[] = cityName.split(".");
+	    	if(a.length ==1)
+	        	tureCityName = a[1];	    	
+	    	else
+	    		tureCityName = cityName;
 			cityInfo information = new cityInfo();  
 			information.setId(i);  
-			information.setTitle(cityName);  
-			information.setDetails(cityName+"的天气情况");  
-			information.setAvatar(R.drawable.ic_launcher);  
-			mlistInfo.add(information); //将新的info对象加入到信息列表中  
+			information.setTitle(tureCityName);  														
+			mlistInfo.add(information); //将新的info对象加入到信息列表中 					
 			i++;  
 		}
 		lv.setAdapter(new ListViewAdapter(mlistInfo,context));
@@ -309,16 +312,20 @@ public class MainUI extends RelativeLayout{
 				// TODO Auto-generated method stub
 				Iterator it = db.getCollection().iterator();
 				int i = 0;
-				String cityName="";
+				String cityName = "";
+				String tureCityName="";		    	
 				mlistInfo.clear();   
 				while(it.hasNext()){
 					cityName = it.next().toString();
+					String a[] = cityName.split(".");
+			    	if(a.length ==1)
+			        	tureCityName = a[1];	    	
+			    	else
+			    		tureCityName = cityName;
 					cityInfo information = new cityInfo();  
 					information.setId(i);  
-					information.setTitle(cityName);  
-					information.setDetails(cityName+"的天气情况");  
-					information.setAvatar(R.drawable.ic_launcher);  
-					mlistInfo.add(information); //将新的info对象加入到信息列表中  
+					information.setTitle(tureCityName);  														
+					mlistInfo.add(information); //将新的info对象加入到信息列表中 					
 					i++;  
 				}
 				getObject = mlistInfo.get(position);//通过position获取所点击的对象 
@@ -335,16 +342,20 @@ public class MainUI extends RelativeLayout{
 				// TODO Auto-generated method stub
 				Iterator it = db.getCollection().iterator();
 				int i = 0;
-				String cityName="";
+				String cityName = "";
+				String tureCityName="";		    	
 				mlistInfo.clear();   
 				while(it.hasNext()){
 					cityName = it.next().toString();
+					String a[] = cityName.split(".");
+			    	if(a.length ==1)
+			        	tureCityName = a[1];	    	
+			    	else
+			    		tureCityName = cityName;
 					cityInfo information = new cityInfo();  
 					information.setId(i);  
-					information.setTitle(cityName);  
-					information.setDetails(cityName+"的天气情况");  
-					information.setAvatar(R.drawable.ic_launcher);  
-					mlistInfo.add(information); //将新的info对象加入到信息列表中  
+					information.setTitle(tureCityName);  														
+					mlistInfo.add(information); //将新的info对象加入到信息列表中 					
 					i++;  
 				}
 				getObject = mlistInfo.get(position);
@@ -362,7 +373,8 @@ public class MainUI extends RelativeLayout{
 				conMenu.add(0, 0, 0, "我要看这里的天气");
 				conMenu.add(0, 1, 1, "我要删了它");
 				}
-		});	
+		});
+		db.close();
 	}
 	//------------------何明的监狱------------------------//
 	//---------------初始化界面的各个部分！！！------------------//

@@ -20,10 +20,8 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 
-import com.example.adapter.TwoDaysInfoAdapter;
 //-------个人包-------//
 import com.example.controler.*;
-import com.example.myview.LineGridView;
 import com.example.myview.MainUI;
 
 
@@ -40,16 +38,20 @@ public class WeatherActivity extends Activity {
     	db.createCollectionDB(this.getApplicationContext());
 		Iterator it = db.getCollection().iterator();
 		int i = 0;
-		String cityName="";
+		String cityName = "";
+		String tureCityName="";		    	
 		mlistInfo.clear();   
 		while(it.hasNext()){
 			cityName = it.next().toString();
+			String a[] = cityName.split(".");
+	    	if(a.length ==1)
+	        	tureCityName = a[1];	    	
+	    	else
+	    		tureCityName = cityName;
 			cityInfo information = new cityInfo();  
 			information.setId(i);  
-			information.setTitle(cityName);  
-			information.setDetails(cityName+"的天气情况");  
-			information.setAvatar(R.drawable.ic_launcher);  
-			mlistInfo.add(information); //将新的info对象加入到信息列表中  
+			information.setTitle(tureCityName);  														
+			mlistInfo.add(information); //将新的info对象加入到信息列表中 					
 			i++;  
 		}
 		mainLayout.setFlipperAndPageView();
@@ -94,33 +96,33 @@ public class WeatherActivity extends Activity {
     	DBManager db=new DBManager(WeatherActivity.this);
     	db.createCollectionDB(this.getApplicationContext());
     	String cityName = mainLayout.getInfo().getTitle();
-    	String a[] = cityName.split(".");
-    	String tureCityName = a[1];
-    	int cityId = 0;
+    	String tureCityName="";
+    	
     	///////////////////////////////////////////////////
 		switch(aItem.getItemId()){
 		case 0:
 			
-			cityId = db.getCityCode(tureCityName);
-			db.setLastWeather(cityName, "阳光明媚");
 			//读取天气信息
 			Toast.makeText(WeatherActivity.this, db.getLastWeather(cityName),Toast.LENGTH_SHORT).show();
 			return true;  
 		case 1:
 			db.deleteCity(mainLayout.getInfo().getTitle());		
 			Iterator it = db.getCollection().iterator();
-			int i = 0;			
+			int i = 0;	
 			mlistInfo.clear();   
 			while(it.hasNext()){
 				cityName = it.next().toString();
+				String a[] = cityName.split(".");
+		    	if(a.length ==1)
+		        	tureCityName = a[1];	    	
+		    	else
+		    		tureCityName = cityName;
 				cityInfo information = new cityInfo();  
 				information.setId(i);  
-				information.setTitle(cityName);  
-				information.setDetails(cityName+"的天气情况");  
-				information.setAvatar(R.drawable.ic_launcher);  
-				mlistInfo.add(information); //将新的info对象加入到信息列表中  
-				i++;
-			}  
+				information.setTitle(tureCityName);  														
+				mlistInfo.add(information); //将新的info对象加入到信息列表中 					
+				i++;  
+			}
 			mainLayout.RefreshAllList(mlistInfo);
 			Toast.makeText(WeatherActivity.this, "你删除了这个地方",Toast.LENGTH_SHORT).show();
 			mainLayout.setFlipperAndPageView();
