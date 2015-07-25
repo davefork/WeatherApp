@@ -17,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.view.MenuItem;
 
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 
@@ -28,6 +29,7 @@ import com.example.myview.MainUI;
 //-------个人包-------//
 public class WeatherActivity extends Activity {
 	private MainUI mainLayout;
+
 	public static int width,height;
 	@Override
 	protected void onStart() {
@@ -66,14 +68,13 @@ public class WeatherActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        
 	    DisplayMetrics metric = new DisplayMetrics();  
 	    getWindowManager().getDefaultDisplay().getMetrics(metric);  
-	     width = metric.widthPixels;     // 屏幕宽度（像素）  
-	     height = metric.heightPixels;   // 屏幕高度（像素）  
-        
+	    width = metric.widthPixels;     // 屏幕宽度（像素）  
+	    height = metric.heightPixels;   // 屏幕高度（像素）  
+
         mainLayout=new MainUI(this);
-        
         setContentView(mainLayout);
 
         mainLayout.getAddCityButton().setOnClickListener(new OnClickListener() {

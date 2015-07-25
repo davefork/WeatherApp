@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
+
 
 
 public class LineChartAdapter extends BaseAdapter{
@@ -21,6 +23,7 @@ public class LineChartAdapter extends BaseAdapter{
     
     private WeatherDataManager wData;
     
+
     public LineChartAdapter(Context c,WeatherDataManager wData){  
         mContext = c;  
         this.wData=wData;

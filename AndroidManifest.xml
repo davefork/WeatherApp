@@ -34,6 +34,23 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.NoTitleBar" >
+        
+        <receiver android:name="com.example.widget.widgetProvider" >  
+            <!-- 指定桌面小控件的meta-data -->  
+            <meta-data  
+                android:name="android.appwidget.provider"  
+                android:resource="@xml/widget_provider"/>
+            <!-- 将该BroadcastReceiver当成桌面小控件 -->  
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>  
+        </receiver>
+        
+        <service android:name="com.example.widget.UpdateService" >
+        </service> 
+        
+
+
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
@@ -43,6 +60,7 @@
                 </action>
             </intent-filter>
         </service>
+        
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="ZnffyZM0slMS0jjXrchXO7ni" />

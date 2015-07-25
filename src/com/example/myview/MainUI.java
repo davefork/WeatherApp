@@ -149,8 +149,7 @@ public class MainUI extends RelativeLayout{
 		
 		dbManager.createCollectionDB(context);
 		colset=dbManager.getCollection();
-		
-		
+	
 		flipper=(ViewFlipper) layoutMiddle.findViewById(R.id.flipper);
 		pagesLayout=(LinearLayout)layoutTitle.findViewById(R.id.page_layout);
 		middlePart.setData(flipper,colset.size(),this);

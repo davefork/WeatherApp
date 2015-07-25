@@ -143,6 +143,7 @@ public class WeatherDataManager {
 		}
 		return tmp;
 	}
+	
 	public String getWindDescription(int day){				//获取风的描述
 		String tmp= weatherInfo.get("wind"+day);
 		if(tmp==null){
