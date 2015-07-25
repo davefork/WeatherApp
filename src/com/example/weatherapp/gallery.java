@@ -24,48 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class gallery extends Activity{
-	private Gallery mGallery;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO 自动生成的方法存根
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.sforcast);
-		
-		mGallery = (Gallery)findViewById(R.id.gallery1);
-		
-		try {
-			mGallery.setAdapter(new myAdapter(this));
-		} catch (IllegalArgumentException e) {
-			// TODO 自动生成的 catch 块
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO 自动生成的 catch 块
-			e.printStackTrace();
-		}
-//		mGallery.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				// TODO 自动生成的方法存根
-//				v.setBackgroundColor(getResources().getColor(R.color.click));
-//				mGallery.setBackgroundColor(getResources().getColor(R.color.click));
-//			}
-//		});
-		mGallery.setOnItemClickListener(new OnItemClickListener(){
-
-			@Override
-			public void onItemClick(AdapterView parent,View v,int position,long id) {
-				// TODO 自动生成的方法存根
-				mGallery.setBackgroundColor(Color.BLACK);
-				//v.setBackgroundColor(Color.BLACK);
-				//v.setBackgroundColor(getResources().getColor(R.color.click));
-			}
-			
-		});
-	}
-}
 
 class myAdapter extends BaseAdapter{
 	private Context mContext;  
@@ -74,7 +33,7 @@ class myAdapter extends BaseAdapter{
     
     private WeatherDataManager wData=new WeatherDataManager();
     
-    public myAdapter(Context c) throws IllegalArgumentException, IllegalAccessException{  
+    public myAdapter(Context c){  
         mContext = c;  
         wData.HttpGetData();
         try {

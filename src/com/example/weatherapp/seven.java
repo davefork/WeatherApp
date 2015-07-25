@@ -19,7 +19,6 @@ public class seven extends View{
 		super(context);
 		// TODO 自动生成的构造函数存根
 		wData.HttpGetData();
-		
 	}
 
 	public seven(Context context, AttributeSet attrs) {
