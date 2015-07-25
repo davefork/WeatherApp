@@ -7,14 +7,15 @@
      <com.example.myview.RefreshableView  
         android:id="@+id/refreshView"  
         android:layout_width="fill_parent"  
-        android:layout_height="fill_parent" >  
-  
+        android:layout_height="fill_parent"
+        android:layout_marginTop="-47dp" >  
          <ListView
 	        android:id="@+id/mainList"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
+	        android:divider="@null"
 	        android:scrollbars="none">
     	</ListView>
-    </com.example.myview.RefreshableView>  
-   
+    </com.example.myview.RefreshableView>    
+
 </FrameLayout>

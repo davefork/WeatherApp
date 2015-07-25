@@ -1,10 +1,13 @@
 package com.example.widget;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.security.PublicKey;
 
+import com.example.controler.DBManager;
+import com.example.controler.WeatherDataManager;
 import com.example.weatherapp.R;
+import com.example.weatherapp.WeatherActivity;
 
+import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
@@ -21,6 +24,9 @@ import android.widget.RemoteViews;
 public class UpdateService extends Service {
 	private static final int UPDATE = 0x123;
 	private RemoteViews remoteViews;
+	private WeatherDataManager wData;
+	
+	private int[] weatherImg = {R.drawable.d00,R.drawable.d01,R.drawable.d02};
 
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -34,7 +40,7 @@ public class UpdateService extends Service {
             switch (msg.what) {  
             case UPDATE:  
                 // 更新天气  
-                updateTime();  
+                updateTime();
                 updateWeather();  
                 break;  
             }  
@@ -60,6 +66,10 @@ public class UpdateService extends Service {
 		updateTime();// 第一次运行时先更新一下时间和天气  
         updateWeather();
         
+        // 点击天气图片，进入MainActivity  
+        Intent intent=new Intent(getApplicationContext(), WeatherActivity.class);  
+        PendingIntent pi=PendingIntent.getActivity(getApplicationContext(),0,intent,0);  
+        remoteViews.setOnClickPendingIntent(R.id.tvCurrTime, pi);
 	}
 
 	private void updateTime() {  
@@ -67,39 +77,30 @@ public class UpdateService extends Service {
         time.setToNow();
         int hour = time.hour;
         int min = time.minute;
-        int second = time.second;
         int year = time.year;
         int month = time.month+1;
         int day = time.monthDay;
-        String strTime = String.format("%02d:%02d:%02d %04d-%02d-%02d", hour, min, second,year,month,day);
-        System.out.println(strTime);
+        String strTime = String.format("%02d:%02d",hour,min);
+        String strDay = String.format("%04d-%02d-%02d",year,month,day);
         remoteViews.setTextViewText(R.id.tvCurrTime,strTime);
+        remoteViews.setTextViewText(R.id.tvCurrDay,strDay);
+        //remoteViews.setImageViewResource(R.id.imgW,R.drawable.w1);
         
         ComponentName componentName = new ComponentName(getApplication(),widgetProvider.class);  
         AppWidgetManager.getInstance(getApplication()).updateAppWidget(componentName, remoteViews);
         
     }
     
-    private void updateWeather() {  
-        // Weather w = new GetWeather().googleWeather();  
-        // if (w != null) {  
-        // System.out.println("当前天气：" + w.getWeather() + ":" + w.getTemp_c()  
-        // + ":" + w.getIcon());  
-//        remoteViews.setTextViewText(R.id.condition, MyWeather.weather1);  
-//        remoteViews.setTextViewText(R.id.tem, (MyWeather.temp1));  
-        // 根据图片名，获取天气图片资源  
-        // remoteViews.setImageViewResource(  
-        // R.id.weather,  
-        // getApplicationContext().getResources().getIdentifier(  
-        // w.getIcon(), "drawable", "com.way.apptest"));  
-//        if (MyWeather.img1 != null || !"".equals(MyWeather.img1))   
-//            remoteViews.setImageViewResource(R.id.weather,  
-//                    weatherImg[Integer.parseInt(MyWeather.img1)]);  
-//        // 执行更新  
-//        ComponentName componentName = new ComponentName(  
-//                getApplicationContext(), App.class);  
-//        AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(  
-//                componentName, remoteViews);  
+    private void updateWeather() {
+    	wData=new WeatherDataManager("北京",DBManager.getDBManager(widgetProvider.pubContext));
+    	
+    	remoteViews.setTextViewText(R.id.tvCity,wData.getCity());
+    	remoteViews.setTextViewText(R.id.tvDes,wData.GetWeatherString(1));
+    	remoteViews.setTextViewText(R.id.tvTep,wData.getMaxDegreeInDay(1));
+    	remoteViews.setImageViewResource(R.id.imgWeather,R.drawable.d04); 
+        // 执行更新  
+    	ComponentName componentName = new ComponentName(getApplication(),widgetProvider.class);  
+        AppWidgetManager.getInstance(getApplication()).updateAppWidget(componentName, remoteViews); 
     }
 
 	@Override

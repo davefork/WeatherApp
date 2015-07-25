@@ -8,11 +8,12 @@ import android.content.Intent;
 public class widgetProvider extends AppWidgetProvider {
 
 	private Intent intent;
+	public static Context pubContext;
 	
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
-		
+		pubContext=context;
 		intent = new Intent(context, UpdateService.class);  
         context.startService(intent);
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
