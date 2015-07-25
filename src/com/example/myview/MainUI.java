@@ -1,5 +1,5 @@
 package com.example.myview;
-
+	
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +25,7 @@ import android.widget.ViewFlipper;
 import com.example.ImageProcess.ImageProcess;
 import com.example.adapter.ListViewAdapter;
 import com.example.adapter.WeatherMainListview;
+import com.example.background.ShinyDayView;
 import com.example.controler.DBManager;
 import com.example.controler.WeatherDataManager;
 import com.example.controler.cityInfo;
@@ -137,6 +138,11 @@ public class MainUI extends RelativeLayout{
 			}
 		});
 		
+		ShinyDayView shinyBg=new ShinyDayView(context);
+		LayoutParams bgParams=new LayoutParams(MarginLayoutParams.MATCH_PARENT, MarginLayoutParams.MATCH_PARENT);	
+		shinyBg.setLayoutParams(bgParams);
+		FrameLayout bgFrame=(FrameLayout) layoutBg.findViewById(R.id.bgContainer);
+		bgFrame.addView(shinyBg);
 		middlePart.addView(layoutBg);
 		
 		middlePart.addView(layoutMiddle);
