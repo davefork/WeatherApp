@@ -43,9 +43,11 @@ public class MainUI extends RelativeLayout{
 	private List<String> colset;
 	//private Scroller mScroller;
 	ListView middleMainList;
+	FrameLayout bgFrame;
 	private boolean isBkDark=false;
 	private ImageProcess imageProcess;
 	View layoutTitle;
+	View layoutBg;
 	private ImageView pagesView[];
 	View weatherViews[];
 	private RefreshableView[] refreshableViews;
@@ -87,6 +89,12 @@ public class MainUI extends RelativeLayout{
 		RefreshableView []tmpRefreshableViews=new RefreshableView[colset.size()];
 		
 		LayoutParams pagesParams=new LayoutParams(17, 17);
+		bgFrame.removeAllViews();
+		ShinyDayView shinyBg=new ShinyDayView(context);
+		LayoutParams bgParams=new LayoutParams(MarginLayoutParams.MATCH_PARENT, MarginLayoutParams.MATCH_PARENT);
+		shinyBg.setLayoutParams(bgParams);
+		shinyBg.setActivated(true);	
+		bgFrame.addView(shinyBg);
 		flipper.removeAllViews();
 		pagesLayout.removeAllViews();
 		for(int i = 0; i < colset.size(); i++)  
@@ -100,6 +108,7 @@ public class MainUI extends RelativeLayout{
 			tmpPagesView[i]=new ImageView(context);
 			tmpPagesView[i].setLayoutParams(pagesParams);
 			tmpPagesView[i].setPadding(5, 0, 5, 0);
+			tmpPagesView[i].setActivated(true);
 			pagesLayout.addView(tmpPagesView[i]);
 			tmpRefreshableViews[i].setOnRefreshListener(new RrefreshListener(i) {
 				@Override
@@ -110,18 +119,21 @@ public class MainUI extends RelativeLayout{
 				}
 			}, i);
         }
+		
 		setPagesImg();
 	
 		weatherViews=tmpWeatherViews;
 		pagesView=tmpPagesView;
 		refreshableViews=tmpRefreshableViews;
+		postInvalidate();
+		invalidate();
 		
 	}
 
 	private void setMiddlePart(){
 		layoutTitle=LayoutInflater.from(context).inflate(R.layout.activity_weather_title,null);
 		View layoutMiddle=LayoutInflater.from(context).inflate(R.layout.flipper_layout, null);
-		View layoutBg=LayoutInflater.from(context).inflate(R.layout.background, null);
+		layoutBg=LayoutInflater.from(context).inflate(R.layout.background, null);
 		
 		
 		//之后需要改掉的地方！！！！！！！！！！！！！！！
@@ -138,11 +150,8 @@ public class MainUI extends RelativeLayout{
 			}
 		});
 		
-		ShinyDayView shinyBg=new ShinyDayView(context);
-		LayoutParams bgParams=new LayoutParams(MarginLayoutParams.MATCH_PARENT, MarginLayoutParams.MATCH_PARENT);	
-		shinyBg.setLayoutParams(bgParams);
-		FrameLayout bgFrame=(FrameLayout) layoutBg.findViewById(R.id.bgContainer);
-		bgFrame.addView(shinyBg);
+		bgFrame=(FrameLayout) layoutBg.findViewById(R.id.bgContainer);
+	
 		middlePart.addView(layoutBg);
 		
 		middlePart.addView(layoutMiddle);
@@ -151,7 +160,6 @@ public class MainUI extends RelativeLayout{
 		dbManager.createCollectionDB(context);
 		colset=dbManager.getCollection();
 		
-		
 		flipper=(ViewFlipper) layoutMiddle.findViewById(R.id.flipper);
 		pagesLayout=(LinearLayout)layoutTitle.findViewById(R.id.page_layout);
 		middlePart.setData(flipper,colset.size(),this);
@@ -159,7 +167,6 @@ public class MainUI extends RelativeLayout{
 		weatherViews=new View[colset.size()];
 		pagesView=new ImageView[colset.size()];
 		refreshableViews=new RefreshableView[colset.size()];
-		
 		
 		LayoutParams pagesParams=new LayoutParams(17, 17);
 		
@@ -261,6 +268,7 @@ public class MainUI extends RelativeLayout{
 	public void RefreshAllList(List<cityInfo> mlistInfo){
 		ListView lv=(ListView)(leftMenu.findViewById(R.id.list_collection));
 		lv.setAdapter(new ListViewAdapter(mlistInfo,context));
+		
 	}
 ///////////////////////////////////////////////////////////////////
 	public ImageView getAddCityButton(){

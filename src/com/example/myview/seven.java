@@ -1,6 +1,8 @@
-package com.example.weatherapp;
+package com.example.myview;
 
 import com.example.controler.WeatherDataManager;
+import com.example.weatherapp.R;
+import com.example.weatherapp.R.color;
 
 import android.content.Context;
 import android.graphics.Canvas;

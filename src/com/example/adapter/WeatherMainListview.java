@@ -2,10 +2,10 @@ package com.example.adapter;
 
 import com.example.controler.WeatherDataManager;
 import com.example.myview.LineGridView;
+import com.example.myview.seven;
 import com.example.weatherapp.R;
 import com.example.weatherapp.ViewPagerActivity;
 import com.example.weatherapp.WeatherActivity;
-import com.example.weatherapp.seven;
 
 import android.content.Context;
 import android.content.Intent;

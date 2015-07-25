@@ -228,7 +228,7 @@ public class WeatherDataManager {
 	    		dbManager.setLastWeather(getCity(), rev);
 	    	}
 	    	else{
-	    		Toast.makeText(dbManager.getContext(), "您的网络状况不是很好呦~",Toast.LENGTH_SHORT).show();	
+	    		System.out.println("333333333333333")	;
 	    	}
 	    }
 	};

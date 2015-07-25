@@ -59,7 +59,7 @@ public class WeatherActivity extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		mainLayout.invalidate();
+
 	}
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +95,12 @@ public class WeatherActivity extends Activity {
     	db.createCollectionDB(this.getApplicationContext());
     	String cityName = mainLayout.getInfo().getTitle();
     	String a[] = cityName.split(".");
-    	String tureCityName = a[1];
+    	String tureCityName;
+    	if(a.length==1){	
+    		tureCityName= a[1];
+    	}else{
+    		tureCityName=cityName;
+    	}
     	int cityId = 0;
     	///////////////////////////////////////////////////
 		switch(aItem.getItemId()){
@@ -110,7 +115,7 @@ public class WeatherActivity extends Activity {
 			db.deleteCity(mainLayout.getInfo().getTitle());		
 			Iterator it = db.getCollection().iterator();
 			int i = 0;			
-			mlistInfo.clear();   
+			mlistInfo.clear(); 
 			while(it.hasNext()){
 				cityName = it.next().toString();
 				cityInfo information = new cityInfo();  
