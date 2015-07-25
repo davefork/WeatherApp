@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.controler.WeatherDataManager;
 import com.example.controler.cityInfo;
 import com.example.weatherapp.R;
 
@@ -24,6 +25,9 @@ public class ListViewAdapter extends BaseAdapter
 		itemViews=new View[mlistInfo.size()]; 
 		for(int i=0;i<mlistInfo.size();i++){
 			cityInfo getInfo = (cityInfo)mlistInfo.get(i);
+			WeatherDataManager cityWDB = WeatherDataManager.getWeatherDataManager(getInfo.getTitle(), null);
+			getInfo.setDetails(cityWDB.getDegreeString(1)+cityWDB.getImageTitle(1, 0));
+			getInfo.setAvatar(Integer.parseInt(cityWDB.getImageId(1, 0)));
 			itemViews[i]=makeItemView(
 					getInfo.getTitle(),getInfo.getDetails(),getInfo.getAvatar());
 		}
@@ -66,7 +70,7 @@ public class ListViewAdapter extends BaseAdapter
 				TextView text = (TextView) itemView.findViewById(R.id.info);    
 				text.setText(strText);    
 				ImageView image = (ImageView) itemView.findViewById(R.id.img);    
-				image.setImageResource(resId);  
+				image.getDrawable().setLevel(resId);  
 
 		return itemView;
 	}

@@ -21,8 +21,7 @@ public class seven extends View{
 	public seven(Context context) {
 		super(context);
 		// TODO 自动生成的构造函数存根
-		//wData=WeatherDataManager.getWeatherDataManager();
-		
+
 	}
 
 	public seven(Context context, AttributeSet attrs) {
